@@ -1,0 +1,99 @@
+version: '3.8'
+
+services:
+
+  # ── MongoDB ──────────────────────────────────────────────────
+  mongo:
+    image: mongo:7
+    container_name: mongo
+    restart: unless-stopped
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - airbnb-net
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── Neo4j ────────────────────────────────────────────────────
+  neo4j:
+    image: neo4j:5
+    container_name: neo4j
+    restart: unless-stopped
+    ports:
+      - "7474:7474"   # Neo4j Browser (UI web)
+      - "7687:7687"   # Bolt (driver Spring Boot)
+    environment:
+      - NEO4J_AUTH=neo4j/password
+    volumes:
+      - neo4j-data:/data
+    networks:
+      - airbnb-net
+    healthcheck:
+      test: ["CMD", "cypher-shell", "-u", "neo4j", "-p", "password", "RETURN 1"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+
+  # ── Spring Boot Backend ──────────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: backend
+    restart: unless-stopped
+    depends_on:
+      mongo:
+        condition: service_healthy
+      neo4j:
+        condition: service_healthy
+    environment:
+      # Surcharge application.properties pour Docker
+      - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/airbnb_clone
+      - SPRING_DATA_MONGODB_DATABASE=airbnb_clone
+      - SPRING_NEO4J_URI=bolt://neo4j:7687
+      - SPRING_NEO4J_AUTHENTICATION_USERNAME=neo4j
+      - SPRING_NEO4J_AUTHENTICATION_PASSWORD=password
+    networks:
+      - airbnb-net
+    # Pas de port exposé : seul nginx y accède en interne
+
+  # ── Angular Frontend (nginx) ─────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"       # Site web principal (accès local)
+    depends_on:
+      - backend
+    networks:
+      - airbnb-net
+
+  # ── ngrok (tunnel internet) ───────────────────────────────────
+  ngrok:
+    image: ngrok/ngrok:latest
+    container_name: ngrok
+    restart: unless-stopped
+    depends_on:
+      - frontend
+    environment:
+      - NGROK_AUTHTOKEN=${NGROK_AUTHTOKEN}
+    command: http frontend:80 --log=stdout
+    ports:
+      - "4040:4040"   # Interface ngrok → voir l'URL sur http://localhost:4040
+    networks:
+      - airbnb-net
+
+# ── Réseaux & Volumes ────────────────────────────────────────────
+networks:
+  airbnb-net:
+    driver: bridge
+
+volumes:
+  mongo-data:
+  neo4j-data:

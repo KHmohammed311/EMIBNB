@@ -1,0 +1,89 @@
+# ============================================================
+# ÉTAPE 5 — Replica Set MongoDB (3 nœuds)
+# Démarrer : docker-compose -f docker-compose-replicaset.yml up -d
+# ============================================================
+
+version: '3.8'
+
+services:
+
+  # ─── Nœud primaire ────────────────────────────────────────
+  mongo-primary:
+    image: mongo:7.0
+    container_name: mongo-primary
+    ports:
+      - "27017:27017"
+    command: mongod --replSet rs0 --bind_ip_all --port 27017
+    volumes:
+      - mongo-primary-data:/data/db
+      - ./init-replica.js:/docker-entrypoint-initdb.d/init-replica.js:ro
+    networks:
+      - mongo-network
+    restart: unless-stopped
+
+  # ─── Secondaire 1 ─────────────────────────────────────────
+  mongo-secondary1:
+    image: mongo:7.0
+    container_name: mongo-secondary1
+    ports:
+      - "27018:27018"
+    command: mongod --replSet rs0 --bind_ip_all --port 27018
+    volumes:
+      - mongo-secondary1-data:/data/db
+    networks:
+      - mongo-network
+    depends_on:
+      - mongo-primary
+    restart: unless-stopped
+
+  # ─── Secondaire 2 ─────────────────────────────────────────
+  mongo-secondary2:
+    image: mongo:7.0
+    container_name: mongo-secondary2
+    ports:
+      - "27019:27019"
+    command: mongod --replSet rs0 --bind_ip_all --port 27019
+    volumes:
+      - mongo-secondary2-data:/data/db
+    networks:
+      - mongo-network
+    depends_on:
+      - mongo-primary
+    restart: unless-stopped
+
+  # ─── Initialiseur du replica set ──────────────────────────
+  mongo-init:
+    image: mongo:7.0
+    container_name: mongo-init
+    depends_on:
+      - mongo-primary
+      - mongo-secondary1
+      - mongo-secondary2
+    networks:
+      - mongo-network
+    restart: "no"
+    command: >
+      bash -c "
+        sleep 10
+        mongosh --host mongo-primary:27017 --eval '
+          rs.initiate({
+            _id: \"rs0\",
+            members: [
+              { _id: 0, host: \"mongo-primary:27017\",   priority: 2 },
+              { _id: 1, host: \"mongo-secondary1:27018\", priority: 1 },
+              { _id: 2, host: \"mongo-secondary2:27019\", priority: 1 }
+            ]
+          })
+        '
+        sleep 5
+        echo \"Replica set initialisé\"
+      "
+
+volumes:
+  mongo-primary-data:
+  mongo-secondary1-data:
+  mongo-secondary2-data:
+
+networks:
+  mongo-network:
+    driver: bridge

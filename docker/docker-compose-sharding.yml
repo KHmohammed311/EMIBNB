@@ -1,0 +1,173 @@
+# ============================================================
+# ÉTAPE 5 — Cluster Shardé MongoDB
+# Architecture :
+#   - 1 Config Server (port hôte 37019 → interne 27019)
+#   - 1 Mongos Router (port hôte 37017 → interne 27017)
+#   - 3 Shards (ports 27021, 27022, 27023)
+# Ports hôte décalés pour éviter conflit avec le replica set
+# Démarrer : docker-compose -f docker-compose-sharding.yml up -d
+# ============================================================
+
+version: '3.8'
+
+services:
+
+  # ════════════════════════════════════════════════════════════
+  # CONFIG SERVER (replica set : configReplSet)
+  # ════════════════════════════════════════════════════════════
+  configsvr:
+    image: mongo:7.0
+    container_name: configsvr
+    ports:
+      - "37019:27019"
+    command: >
+      mongod
+      --configsvr
+      --replSet configReplSet
+      --port 27019
+      --bind_ip_all
+      --dbpath /data/configdb
+    volumes:
+      - configsvr-data:/data/configdb
+    networks:
+      - shard-network
+    restart: unless-stopped
+
+  # ════════════════════════════════════════════════════════════
+  # SHARDS (3 nœuds standalone pour la démo)
+  # ════════════════════════════════════════════════════════════
+  shard1:
+    image: mongo:7.0
+    container_name: shard1
+    ports:
+      - "27021:27021"
+    command: >
+      mongod
+      --shardsvr
+      --replSet shard1ReplSet
+      --port 27021
+      --bind_ip_all
+    volumes:
+      - shard1-data:/data/db
+    networks:
+      - shard-network
+    restart: unless-stopped
+
+  shard2:
+    image: mongo:7.0
+    container_name: shard2
+    ports:
+      - "27022:27022"
+    command: >
+      mongod
+      --shardsvr
+      --replSet shard2ReplSet
+      --port 27022
+      --bind_ip_all
+    volumes:
+      - shard2-data:/data/db
+    networks:
+      - shard-network
+    restart: unless-stopped
+
+  shard3:
+    image: mongo:7.0
+    container_name: shard3
+    ports:
+      - "27023:27023"
+    command: >
+      mongod
+      --shardsvr
+      --replSet shard3ReplSet
+      --port 27023
+      --bind_ip_all
+    volumes:
+      - shard3-data:/data/db
+    networks:
+      - shard-network
+    restart: unless-stopped
+
+  # ════════════════════════════════════════════════════════════
+  # MONGOS ROUTER
+  # ════════════════════════════════════════════════════════════
+  mongos:
+    image: mongo:7.0
+    container_name: mongos
+    ports:
+      - "37017:27017"
+    command: >
+      mongos
+      --configdb configReplSet/configsvr:27019
+      --port 27017
+      --bind_ip_all
+    networks:
+      - shard-network
+    depends_on:
+      - configsvr
+      - shard1
+      - shard2
+      - shard3
+    restart: unless-stopped
+
+  # ════════════════════════════════════════════════════════════
+  # INITIALISEUR — configure le cluster après démarrage
+  # ════════════════════════════════════════════════════════════
+  cluster-init:
+    image: mongo:7.0
+    container_name: cluster-init
+    networks:
+      - shard-network
+    depends_on:
+      - mongos
+    restart: "no"
+    command: >
+      bash -c "
+        echo 'Attente du démarrage des services...'
+        sleep 15
+
+        echo '1/4 — Initialisation du Config Server replica set...'
+        mongosh --host configsvr:27019 --eval '
+          rs.initiate({
+            _id: \"configReplSet\",
+            configsvr: true,
+            members: [{ _id: 0, host: \"configsvr:27019\" }]
+          })
+        '
+        sleep 5
+
+        echo '2/4 — Initialisation des replica sets des shards...'
+        mongosh --host shard1:27021 --eval 'rs.initiate({ _id: \"shard1ReplSet\", members: [{ _id: 0, host: \"shard1:27021\" }] })'
+        mongosh --host shard2:27022 --eval 'rs.initiate({ _id: \"shard2ReplSet\", members: [{ _id: 0, host: \"shard2:27022\" }] })'
+        mongosh --host shard3:27023 --eval 'rs.initiate({ _id: \"shard3ReplSet\", members: [{ _id: 0, host: \"shard3:27023\" }] })'
+        sleep 10
+
+        echo '3/4 — Ajout des shards au cluster...'
+        mongosh --host mongos:27017 --eval '
+          sh.addShard(\"shard1ReplSet/shard1:27021\");
+          sh.addShard(\"shard2ReplSet/shard2:27022\");
+          sh.addShard(\"shard3ReplSet/shard3:27023\");
+        '
+        sleep 5
+
+        echo '4/4 — Configuration du sharding sur la collection annonces...'
+        mongosh --host mongos:27017 --eval '
+          sh.enableSharding(\"airbnb_clone\");
+          db.adminCommand({
+            shardCollection: \"airbnb_clone.annonces\",
+            key: { \"localisation.ville\": 1 }
+          });
+          sh.status();
+        '
+
+        echo \"=== Cluster shardé opérationnel ===\"
+      "
+
+volumes:
+  configsvr-data:
+  shard1-data:
+  shard2-data:
+  shard3-data:
+
+networks:
+  shard-network:
+    driver: bridge

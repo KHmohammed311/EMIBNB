@@ -1,0 +1,35 @@
+# Secrets
+.env
+*.env.local
+
+# Java / Maven
+backend/target/
+*.class
+*.jar
+*.war
+*.nar
+
+# Node / Angular
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+frontend/.cache/
+
+# Logs
+*.log
+logs/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+*.suo
+*.user
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Rapport généré
+generer_rapport.js
+Rapport_AirBnB_Clone_Maroc.docx
