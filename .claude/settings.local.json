@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Get-ChildItem -Recurse \"C:\\\\Users\\\\moham\\\\Desktop\\\\S4\\\\MONBODB\" | Where-Object { !$_.PSIsContainer } | Select-Object -ExpandProperty FullName | Sort-Object)",
+      "PowerShell(mongosh --version 2>&1)",
+      "PowerShell(java --version 2>&1)",
+      "PowerShell(mvn --version 2>&1)",
+      "PowerShell(node --version 2>&1)",
+      "PowerShell(npm --version 2>&1)",
+      "PowerShell(ng version 2>&1)",
+      "PowerShell(docker --version 2>&1)"
+    ]
+  }
+}
