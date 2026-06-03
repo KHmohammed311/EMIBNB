@@ -8,10 +8,10 @@ export interface AuthUser {
 }
 
 const USERS: Array<AuthUser & { password: string }> = [
-  { login: 'admin',    password: 'admin',    userId: '665f000000000000000000a1', nom: 'Utilisateur 1' },
-  { login: 'khelifi',  password: 'khelifi',  userId: '665f000000000000000000a3', nom: 'Mohamed'       },
-  { login: 'mantrach', password: 'mantrach', userId: '665f000000000000000000a4', nom: 'Hamza'         },
-  { login: 'gharbi',   password: 'gharbi',   userId: '665f000000000000000000a5', nom: 'Anas'          },
+  { login: 'admin',    password: 'admin',    userId: '665f000000000000000000a1', nom: 'Admin' },
+  { login: 'khelifi',  password: 'khelifi',  userId: '665f000000000000000000a3', nom: 'Mohammed Khelifi' },
+  { login: 'mantrach', password: 'mantrach', userId: '665f000000000000000000a4', nom: 'Hamza Mantrach' },
+  { login: 'gharbi',   password: 'gharbi',   userId: '665f000000000000000000a5', nom: 'Anass Gharbi' },
 ];
 
 const KEY = 'airbnb_user';

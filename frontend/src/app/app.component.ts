@@ -10,12 +10,13 @@ import { AuthService } from './services/auth.service';
   template: `
     <nav class="navbar" *ngIf="auth.isLoggedIn">
       <div class="navbar-brand">
-        <a routerLink="/" class="logo">🏠 AirBnB Clone</a>
+        <a routerLink="/" class="logo">🏠 EMIBNB</a>
       </div>
       <div class="navbar-links">
         <a routerLink="/" class="nav-link">Accueil</a>
         <a routerLink="/activites" class="nav-link">Activités</a>
         <a routerLink="/dashboard" class="nav-link">Dashboard</a>
+        <a *ngIf="auth.currentUser?.userId === '665f000000000000000000a1'" routerLink="/statistiques" class="nav-link">📊 Stats</a>
         <a [routerLink]="['/profil', auth.currentUser!.userId]" class="nav-link btn-profil">
           👤 {{ auth.currentUser!.nom.split(' ')[0] }}
         </a>
@@ -26,7 +27,7 @@ import { AuthService } from './services/auth.service';
       <router-outlet />
     </main>
     <footer class="footer" *ngIf="auth.isLoggedIn">
-      <p>© 2024 AirBnB Clone Maroc — Tous droits réservés</p>
+      <p>© 2024 EMIBNB — Tous droits réservés</p>
     </footer>
   `,
   styles: [`

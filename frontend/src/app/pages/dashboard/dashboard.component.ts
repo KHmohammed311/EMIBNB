@@ -83,6 +83,28 @@ import { Annonce, Reservation } from '../../models/models';
             <input [(ngModel)]="photoUrl" placeholder="https://images.unsplash.com/..." />
             <small style="color:#888;font-size:.8rem">Laisser vide pour une photo par défaut</small>
           </div>
+          <!-- Politique d'annulation -->
+          <div class="form-group">
+            <label>Politique d'annulation *</label>
+            <select [(ngModel)]="$any(nouvelleAnnonce).politiqueAnnulation.type">
+              <option value="flexible">Flexible — remboursement jusqu'à 1j avant</option>
+              <option value="moderee">Modérée — remboursement jusqu'à 5j avant</option>
+              <option value="stricte">Stricte — remboursement jusqu'à 14j avant</option>
+            </select>
+          </div>
+          <!-- Caractéristiques -->
+          <div class="form-group full">
+            <label>Équipements & Caractéristiques</label>
+            <div class="checkboxes-grid">
+              <label class="checkbox-item"><input type="checkbox" [(ngModel)]="$any(nouvelleAnnonce.caracteristiques).wifi"> 📶 WiFi</label>
+              <label class="checkbox-item"><input type="checkbox" [(ngModel)]="$any(nouvelleAnnonce.caracteristiques).climatisation"> ❄️ Climatisation</label>
+              <label class="checkbox-item"><input type="checkbox" [(ngModel)]="$any(nouvelleAnnonce.caracteristiques).cuisine"> 🍳 Cuisine équipée</label>
+              <label class="checkbox-item"><input type="checkbox" [(ngModel)]="$any(nouvelleAnnonce.caracteristiques).parking"> 🅿️ Parking</label>
+              <label class="checkbox-item"><input type="checkbox" [(ngModel)]="$any(nouvelleAnnonce.caracteristiques).piscine"> 🏊 Piscine</label>
+              <label class="checkbox-item"><input type="checkbox" [(ngModel)]="$any(nouvelleAnnonce.caracteristiques).jacuzzi"> 🛁 Jacuzzi</label>
+              <label class="checkbox-item"><input type="checkbox" [(ngModel)]="$any(nouvelleAnnonce.caracteristiques).animaux"> 🐾 Animaux acceptés</label>
+            </div>
+          </div>
         </div>
         <div class="form-actions">
           <button class="btn-publier" (click)="publierAnnonce()" [disabled]="!formulaireValide()">
@@ -133,6 +155,7 @@ import { Annonce, Reservation } from '../../models/models';
           <table>
             <thead>
               <tr>
+                <th>Annonce</th>
                 <th>Arrivée</th>
                 <th>Départ</th>
                 <th>Voyageurs</th>
@@ -143,6 +166,7 @@ import { Annonce, Reservation } from '../../models/models';
             </thead>
             <tbody>
               <tr *ngFor="let r of reservations">
+                <td>{{ titreAnnonce(r.annonceId) }}</td>
                 <td>{{ r.dateArrivee | date:'dd/MM/yyyy' }}</td>
                 <td>{{ r.dateDepart | date:'dd/MM/yyyy' }}</td>
                 <td>{{ r.nbVoyageurs }}</td>
@@ -197,6 +221,12 @@ import { Annonce, Reservation } from '../../models/models';
     .message-erreur { margin-top:.8rem; background:#fde8e8; color:#c0392b;
       border-radius:8px; padding:.7rem 1rem; }
 
+    .checkboxes-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:.5rem; }
+    .checkbox-item { display:flex; align-items:center; gap:.4rem; font-size:.9rem;
+      cursor:pointer; padding:.4rem; border-radius:6px; }
+    .checkbox-item:hover { background:#fff5f7; }
+    .checkbox-item input { width:16px; height:16px; accent-color:#FF385C; }
+
     .section { margin-bottom:2.5rem; }
     .section h2 { font-size:1.2rem; margin-bottom:1rem; }
     table { width:100%; border-collapse:collapse; }
@@ -242,7 +272,9 @@ export class DashboardComponent implements OnInit {
     prixParNuit: 0, maxVoyageurs: 1,
     hoteId: '',
     localisation: { ville: '', pays: 'Maroc', coordonnees: undefined },
-    photos: [], equipements: []
+    photos: [], equipements: [],
+    caracteristiques: { wifi: false, climatisation: false, cuisine: false, parking: false, piscine: false, jacuzzi: false, animaux: false },
+    politiqueAnnulation: { type: 'flexible', delaiRemboursement: 1 }
   };
 
   constructor(
@@ -281,6 +313,10 @@ export class DashboardComponent implements OnInit {
       this.PHOTOS_DEFAUT[Math.floor(Math.random() * this.PHOTOS_DEFAUT.length)];
     this.nouvelleAnnonce.photos = [photo];
 
+    const delaiMap: Record<string, number> = { flexible: 1, moderee: 5, stricte: 14 };
+    (this.nouvelleAnnonce as any).politiqueAnnulation.delaiRemboursement =
+      delaiMap[(this.nouvelleAnnonce as any).politiqueAnnulation.type] ?? 5;
+
     this.annonceService.creer(this.nouvelleAnnonce as Annonce).subscribe({
       next: () => {
         this.annonceCreee = true;
@@ -291,7 +327,9 @@ export class DashboardComponent implements OnInit {
           prixParNuit: 0, maxVoyageurs: 1,
           hoteId: this.auth.currentUser?.userId ?? '',
           localisation: { ville: '', pays: 'Maroc', coordonnees: undefined },
-          photos: [], equipements: []
+          photos: [], equipements: [],
+          caracteristiques: { wifi: false, climatisation: false, cuisine: false, parking: false, piscine: false, jacuzzi: false, animaux: false },
+          politiqueAnnulation: { type: 'flexible', delaiRemboursement: 1 }
         };
         this.chargerDonnees();
         setTimeout(() => this.annonceCreee = false, 4000);
@@ -318,6 +356,10 @@ export class DashboardComponent implements OnInit {
       this.nouvelleAnnonce.prixParNuit! > 0 &&
       this.nouvelleAnnonce.localisation?.ville
     );
+  }
+
+  titreAnnonce(annonceId: string): string {
+    return this.annonces.find(a => a.id === annonceId)?.titre ?? annonceId.slice(-4);
   }
 
   statutFr(statut?: string): string {

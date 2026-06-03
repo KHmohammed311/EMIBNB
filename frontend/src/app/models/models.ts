@@ -121,9 +121,10 @@ export interface FiltresRecherche {
 
 export interface Recommandation {
   logementId: string;
-  titre: string;
+  titre?: string;
   ville: string;
   prixParNuit: number;
-  score: number;
+  score?: number;
+  scoreCompatibilite: number;
   caracteristiquesCommunes: string[];
 }

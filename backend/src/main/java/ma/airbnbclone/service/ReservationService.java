@@ -84,8 +84,8 @@ public class ReservationService {
         reservation.setStatut(nouveauStatut);
         Reservation saved = reservationRepository.save(reservation);
 
-        // Quand un séjour est terminé, enregistrer la relation A_SEJOURNE dans Neo4j
-        if ("terminee".equals(nouveauStatut)) {
+        // Quand un séjour est terminé ou confirmé, enregistrer la relation A_SEJOURNE dans Neo4j
+        if ("terminee".equals(nouveauStatut) || "confirmee".equals(nouveauStatut)) {
             neo4jSyncService.syncSejour(saved.getVoyageurId(), saved.getAnnonceId());
         }
 

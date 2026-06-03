@@ -200,10 +200,17 @@ export class ReservationComponent implements OnInit {
   confirmerReservation(): void {
     this.enCours = true;
     this.erreur = '';
-    this.reservationService.creer(this.reservation).subscribe({
-      next: () => { this.succes = true; this.enCours = false; },
+    const payload = {
+      ...this.reservation,
+      dateArrivee: this.reservation.dateArrivee + 'T00:00:00',
+      dateDepart:  this.reservation.dateDepart  + 'T00:00:00',
+      prixTotal:   this.prixTotal
+    };
+    this.reservationService.creer(payload as any).subscribe({
+      next: () => { this.succes = true; this.enCours = false;
+        setTimeout(() => this.router.navigate(['/']), 3000); },
       error: (err) => {
-        this.erreur = err.error?.erreur ?? 'Une erreur est survenue.';
+        this.erreur = err.error?.erreur ?? err.error?.message ?? 'Erreur lors de la réservation.';
         this.enCours = false;
       }
     });

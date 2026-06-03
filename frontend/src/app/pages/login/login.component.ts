@@ -11,7 +11,7 @@ import { AuthService } from '../../services/auth.service';
   template: `
     <div class="login-page">
       <div class="login-card">
-        <div class="login-logo">🏠 AirBnB Clone Maroc</div>
+        <div class="login-logo">🏠 EMIBNB</div>
         <h2>Connexion</h2>
 
         <div class="form-group">

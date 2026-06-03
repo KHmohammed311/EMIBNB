@@ -3,7 +3,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { AnnonceService } from '../../services/annonce.service';
-import { Annonce, FiltresRecherche } from '../../models/models';
+import { RecommandationService } from '../../services/recommandation.service';
+import { AuthService } from '../../services/auth.service';
+import { Annonce, FiltresRecherche, Recommandation } from '../../models/models';
 
 @Component({
   selector: 'app-accueil',
@@ -93,6 +95,25 @@ import { Annonce, FiltresRecherche } from '../../models/models';
         Aucune annonce trouvée pour ces critères.
       </p>
     </section>
+
+    <!-- Recommandations Neo4j -->
+    <section class="reco-section" *ngIf="recommandations.length > 0">
+      <div class="reco-header">
+        <h2>✨ Pour vous — recommandé par l'IA</h2>
+        <p>Sélection basée sur vos préférences et séjours passés (Neo4j)</p>
+      </div>
+      <div class="reco-grid">
+        <div *ngFor="let r of recommandations" class="reco-card"
+             [routerLink]="['/annonces', r.logementId]">
+          <div class="reco-score">🎯 {{ r.scoreCompatibilite }} pts</div>
+          <h3>{{ r.ville }}</h3>
+          <p class="reco-prix">{{ r.prixParNuit | number }} MAD / nuit</p>
+          <div class="reco-tags">
+            <span *ngFor="let c of r.caracteristiquesCommunes.slice(0,3)" class="reco-tag">{{ c }}</span>
+          </div>
+        </div>
+      </div>
+    </section>
   `,
   styles: [`
     .hero {
@@ -178,6 +199,21 @@ import { Annonce, FiltresRecherche } from '../../models/models';
     .par-nuit { color: #717171; font-size: .85rem; }
     .chargement { text-align: center; padding: 3rem; color: #717171; font-size: 1.1rem; }
     .aucun-resultat { text-align: center; color: #717171; padding: 3rem; font-size: 1.1rem; }
+
+    .reco-section { max-width:1200px; margin:0 auto 3rem; padding:0 2rem; }
+    .reco-header { margin-bottom:1.5rem; }
+    .reco-header h2 { font-size:1.3rem; }
+    .reco-header p { color:#717171; font-size:.9rem; margin-top:.2rem; }
+    .reco-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:1rem; }
+    .reco-card { background:white; border:1px solid #eee; border-radius:12px; padding:1.2rem;
+      cursor:pointer; transition:all .2s; box-shadow:0 2px 8px rgba(0,0,0,.05); }
+    .reco-card:hover { transform:translateY(-3px); box-shadow:0 6px 20px rgba(0,0,0,.1); }
+    .reco-score { font-size:.78rem; font-weight:700; color:#FF385C; margin-bottom:.5rem; }
+    .reco-card h3 { font-size:1rem; color:#222; margin-bottom:.3rem; }
+    .reco-prix { color:#555; font-size:.9rem; margin-bottom:.5rem; }
+    .reco-tags { display:flex; flex-wrap:wrap; gap:.3rem; }
+    .reco-tag { background:#fff5f7; color:#FF385C; border-radius:20px;
+      padding:.1rem .5rem; font-size:.72rem; font-weight:600; }
   `]
 })
 export class AccueilComponent implements OnInit {
@@ -185,11 +221,23 @@ export class AccueilComponent implements OnInit {
   chargement = true;
   filtres: FiltresRecherche = {};
   typeActif = '';
+  recommandations: Recommandation[] = [];
 
-  constructor(private annonceService: AnnonceService) {}
+  constructor(
+    private annonceService: AnnonceService,
+    private recommandationService: RecommandationService,
+    private auth: AuthService
+  ) {}
 
   ngOnInit(): void {
     this.chargerAnnonces();
+    const userId = this.auth.currentUser?.userId;
+    if (userId) {
+      this.recommandationService.recommanderPourVoyageur(userId).subscribe({
+        next: d => this.recommandations = d,
+        error: () => {}
+      });
+    }
   }
 
   chargerAnnonces(): void {
