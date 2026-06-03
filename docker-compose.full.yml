@@ -37,6 +37,31 @@ services:
       timeout: 10s
       retries: 5
 
+  # ── Neo4j Init (lance les scripts Cypher au 1er démarrage) ──
+  neo4j-init:
+    image: neo4j:5
+    container_name: neo4j-init
+    restart: "no"
+    depends_on:
+      neo4j:
+        condition: service_healthy
+    volumes:
+      - ./neo4j:/scripts
+    networks:
+      - airbnb-net
+    command: >
+      bash -c "
+        COUNT=$$(cypher-shell -a bolt://neo4j:7687 -u neo4j -p password
+          'MATCH (v:Voyageur) RETURN count(v) AS c' --format plain | tail -1);
+        if [ \"$$COUNT\" = '0' ]; then
+          echo '>>> Neo4j vide — injection des données initiales...';
+          cypher-shell -a bolt://neo4j:7687 -u neo4j -p password -f /scripts/01_setup_neo4j.cypher;
+          echo '>>> Init Neo4j terminé.';
+        else
+          echo '>>> Données Neo4j déjà présentes (Voyageurs: '$$COUNT') — rien à faire.';
+        fi
+      "
+
   # ── Spring Boot Backend ──────────────────────────────────────
   backend:
     build:
@@ -49,6 +74,8 @@ services:
         condition: service_healthy
       neo4j:
         condition: service_healthy
+      neo4j-init:
+        condition: service_completed_successfully
     environment:
       # Surcharge application.properties pour Docker
       - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/airbnb_clone
