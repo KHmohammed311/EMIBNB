@@ -157,6 +157,7 @@ import { Annonce, Reservation } from '../../models/models';
             <thead>
               <tr>
                 <th>Annonce</th>
+                <th>Par qui</th>
                 <th>Arrivée</th>
                 <th>Départ</th>
                 <th>Voyageurs</th>
@@ -168,6 +169,7 @@ import { Annonce, Reservation } from '../../models/models';
             <tbody>
               <tr *ngFor="let r of reservations">
                 <td><a [routerLink]="['/annonces', r.annonceId]" class="lien-annonce">{{ titreAnnonce(r.annonceId) }}</a></td>
+                <td class="col-nom">{{ nomUtilisateur(r.voyageurId) }}</td>
                 <td>{{ r.dateArrivee | date:'dd/MM/yyyy' }}</td>
                 <td>{{ r.dateDepart | date:'dd/MM/yyyy' }}</td>
                 <td>{{ r.nbVoyageurs }}</td>
@@ -196,26 +198,41 @@ import { Annonce, Reservation } from '../../models/models';
             <thead>
               <tr>
                 <th>Logement</th>
+                <th>Hôte</th>
                 <th>Ville</th>
                 <th>Arrivée</th>
                 <th>Départ</th>
-                <th>Voyageurs</th>
                 <th>Total</th>
                 <th>Statut</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let r of mesVoyages">
                 <td><a [routerLink]="['/annonces', r.annonceId]" class="lien-annonce">{{ titreAnnonceGlobal(r.annonceId) }}</a></td>
+                <td class="col-nom">{{ nomHote(r.annonceId) }}</td>
                 <td>{{ villeAnnonce(r.annonceId) }}</td>
                 <td>{{ r.dateArrivee | date:'dd/MM/yyyy' }}</td>
                 <td>{{ r.dateDepart | date:'dd/MM/yyyy' }}</td>
-                <td>{{ r.nbVoyageurs }}</td>
                 <td>{{ r.prixTotal | number }} MAD</td>
                 <td><span class="statut-badge" [class]="r.statut">{{ statutFr(r.statut) }}</span></td>
+                <td>
+                  <button *ngIf="r.statut !== 'annulee' && r.statut !== 'terminee'"
+                          class="btn-action annuler"
+                          [title]="politiqueTexte(r.annonceId)"
+                          (click)="annulerVoyage(r)">Annuler</button>
+                  <span *ngIf="r.statut === 'annulee' && r.fraisAnnulation && r.fraisAnnulation > 0"
+                        class="frais-info">Frais : {{ r.fraisAnnulation | number }} MAD</span>
+                </td>
               </tr>
+              <!-- Rappel politique affiché sous le tableau -->
             </tbody>
           </table>
+          <div class="politique-rappel" *ngFor="let r of mesVoyages">
+            <span *ngIf="r.statut !== 'annulee' && r.statut !== 'terminee'">
+              <strong>{{ titreAnnonceGlobal(r.annonceId) }}</strong> — {{ politiqueTexte(r.annonceId) }}
+            </span>
+          </div>
         </div>
       </div>
     </div>
@@ -282,6 +299,11 @@ import { Annonce, Reservation } from '../../models/models';
     .section-sub { color:#aaa; font-size:.9rem; margin-bottom:1rem; }
     .lien-annonce { color:#1a6db5; text-decoration:none; font-weight:500; }
     .lien-annonce:hover { text-decoration:underline; }
+    .col-nom { font-weight:600; color:#333; }
+    .frais-info { font-size:.78rem; color:#c0392b; font-weight:600; }
+    .politique-rappel { padding:.5rem 0; }
+    .politique-rappel span { font-size:.82rem; color:#888; display:block; padding:.2rem 0; }
+    .politique-rappel strong { color:#555; }
   `]
 })
 export class DashboardComponent implements OnInit {
@@ -408,18 +430,53 @@ export class DashboardComponent implements OnInit {
     );
   }
 
-  // Titre depuis MES annonces (section "Réservations reçues")
+  // ── Lookups annonces ──────────────────────────────────────
+
   titreAnnonce(annonceId: string): string {
     return this.annonces.find(a => a.id === annonceId)?.titre ?? annonceId.slice(-4);
   }
 
-  // Titre depuis TOUTES les annonces (section "Mes voyages")
   titreAnnonceGlobal(annonceId: string): string {
     return this.toutesAnnonces.find(a => a.id === annonceId)?.titre ?? '…';
   }
 
   villeAnnonce(annonceId: string): string {
     return this.toutesAnnonces.find(a => a.id === annonceId)?.localisation?.ville ?? '—';
+  }
+
+  // ── Noms utilisateurs ─────────────────────────────────────
+
+  private readonly NOMS: Record<string, string> = {
+    '665f000000000000000000a1': 'Admin',
+    '665f000000000000000000a3': 'Mohammed Khelifi',
+    '665f000000000000000000a4': 'Hamza Mantrach',
+    '665f000000000000000000a5': 'Anass Gharbi',
+  };
+
+  nomUtilisateur(userId: string): string {
+    return this.NOMS[userId] ?? 'Inconnu';
+  }
+
+  nomHote(annonceId: string): string {
+    const hoteId = this.toutesAnnonces.find(a => a.id === annonceId)?.hoteId ?? '';
+    return this.NOMS[hoteId] ?? 'Inconnu';
+  }
+
+  // ── Politique d'annulation ────────────────────────────────
+
+  politiqueTexte(annonceId: string): string {
+    const p = this.toutesAnnonces.find(a => a.id === annonceId)?.politiqueAnnulation;
+    if (!p) return 'Politique non définie';
+    const labels: Record<string, string> = {
+      flexible: 'Flexible', moderee: 'Modérée', stricte: 'Stricte'
+    };
+    return `Politique ${labels[p.type] ?? p.type} — remboursement si annulation ${p.delaiRemboursement}j avant l'arrivée`;
+  }
+
+  annulerVoyage(r: Reservation): void {
+    const politique = this.politiqueTexte(r.annonceId);
+    if (!confirm(`Annuler cette réservation ?\n\n${politique}\n\nDes frais peuvent s'appliquer selon la date d'annulation.`)) return;
+    this.reservationService.changerStatut(r.id!, 'annulee').subscribe(() => this.chargerDonnees());
   }
 
   statutFr(statut?: string): string {
