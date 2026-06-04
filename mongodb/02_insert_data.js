@@ -6,11 +6,11 @@
 use("airbnb_clone");
 
 // ─── IDs réels pour garantir les jointures ($lookup) ────────
-const userId1  = new ObjectId("665f000000000000000000a1"); // Hôte — Youssef
-const userId2  = new ObjectId("665f000000000000000000a2"); // Hôte — Fatima
-const userId3  = new ObjectId("665f000000000000000000a3"); // Voyageur — Mehdi
-const userId4  = new ObjectId("665f000000000000000000a4"); // Voyageur — Sofia
-const userId5  = new ObjectId("665f000000000000000000a5"); // Voyageur — Karim
+const userId1  = new ObjectId("665f000000000000000000a1"); // Admin        (login: admin)
+const userId2  = new ObjectId("665f000000000000000000a2"); // Utilisateur2 (login: user2)
+const userId3  = new ObjectId("665f000000000000000000a3"); // Mohammed Khelifi  (login: khelifi)
+const userId4  = new ObjectId("665f000000000000000000a4"); // Hamza Mantrach    (login: mantrach)
+const userId5  = new ObjectId("665f000000000000000000a5"); // Anass Gharbi      (login: gharbi)
 
 const annonceId1 = new ObjectId("665f000000000000000000b1");
 const annonceId2 = new ObjectId("665f000000000000000000b2");
@@ -21,16 +21,33 @@ const annonceId6 = new ObjectId("665f000000000000000000b6");
 const annonceId7 = new ObjectId("665f000000000000000000b7");
 const annonceId8 = new ObjectId("665f000000000000000000b8");
 
-const reservId1  = new ObjectId("665f000000000000000000c1");
-const reservId2  = new ObjectId("665f000000000000000000c2");
-const reservId3  = new ObjectId("665f000000000000000000c3");
-const reservId4  = new ObjectId("665f000000000000000000c4");
-const reservId5  = new ObjectId("665f000000000000000000c5");
-const reservId6  = new ObjectId("665f000000000000000000c6");
-const reservId7  = new ObjectId("665f000000000000000000c7");
-const reservId8  = new ObjectId("665f000000000000000000c8");
-const reservId9  = new ObjectId("665f000000000000000000c9");
-const reservId10 = new ObjectId("665f000000000000000000ca");
+// Réservations khelifi (voyageur)
+const reservId_k1 = new ObjectId("665f000000000000000000d1");
+const reservId_k2 = new ObjectId("665f000000000000000000d2");
+const reservId_k3 = new ObjectId("665f000000000000000000d3");
+const reservId_k4 = new ObjectId("665f000000000000000000d4");
+const reservId_k5 = new ObjectId("665f000000000000000000d5");
+const reservId_k6 = new ObjectId("665f000000000000000000d6");
+// Réservations mantrach (voyageur)
+const reservId_m1 = new ObjectId("665f000000000000000000d7");
+const reservId_m2 = new ObjectId("665f000000000000000000d8");
+const reservId_m3 = new ObjectId("665f000000000000000000d9");
+const reservId_m4 = new ObjectId("665f000000000000000000da");
+const reservId_m5 = new ObjectId("665f000000000000000000db");
+const reservId_m6 = new ObjectId("665f000000000000000000dc");
+// Réservations gharbi (voyageur)
+const reservId_g1 = new ObjectId("665f000000000000000000dd");
+const reservId_g2 = new ObjectId("665f000000000000000000de");
+const reservId_g3 = new ObjectId("665f000000000000000000df");
+const reservId_g4 = new ObjectId("665f000000000000000000e0");
+const reservId_g5 = new ObjectId("665f000000000000000000e1");
+const reservId_g6 = new ObjectId("665f000000000000000000e2");
+// Réservations admin (voyageur)
+const reservId_a1 = new ObjectId("665f000000000000000000e3");
+const reservId_a2 = new ObjectId("665f000000000000000000e4");
+const reservId_a3 = new ObjectId("665f000000000000000000e5");
+const reservId_a4 = new ObjectId("665f000000000000000000e6");
+const reservId_a5 = new ObjectId("665f000000000000000000e7");
 
 const activiteId1 = new ObjectId("665f000000000000000000d1");
 const activiteId2 = new ObjectId("665f000000000000000000d2");
@@ -43,9 +60,12 @@ const activiteId4 = new ObjectId("665f000000000000000000d4");
 db.users.insertMany([
   {
     _id: userId1,
-    name: "Youssef El Amrani",
+    name: "Utilisateur 1",
+    nom: "Utilisateur 1",
+    login: "admin",
+    motDePasse: "admin",
     email: "youssef@airbnb-clone.ma",
-    passwordHash: "$2b$10$Hashed_password_youssef",
+    passwordHash: "$2b$10$Hashed_password_admin",
     role: "hote",
     avatar: "https://randomuser.me/api/portraits/men/1.jpg",
     languages: ["Arabe", "Français", "Anglais"],
@@ -55,8 +75,11 @@ db.users.insertMany([
   {
     _id: userId2,
     name: "Fatima Zahra Benali",
+    nom: "Utilisateur 2",
+    login: "user2",
+    motDePasse: "user2",
     email: "fatima@airbnb-clone.ma",
-    passwordHash: "$2b$10$Hashed_password_fatima",
+    passwordHash: "$2b$10$Hashed_password_user2",
     role: "hote",
     avatar: "https://randomuser.me/api/portraits/women/2.jpg",
     languages: ["Arabe", "Français"],
@@ -65,10 +88,13 @@ db.users.insertMany([
   },
   {
     _id: userId3,
-    name: "Mehdi Bouchaib",
-    email: "mehdi@airbnb-clone.ma",
-    passwordHash: "$2b$10$Hashed_password_mehdi",
-    role: "voyageur",
+    name: "Mohammed Khelifi",
+    nom: "Mohammed Khelifi",
+    login: "khelifi",
+    motDePasse: "khelifi",
+    email: "khelifi@emi.ac.ma",
+    passwordHash: "$2b$10$Hashed_password_khelifi",
+    role: "hote",
     avatar: "https://randomuser.me/api/portraits/men/3.jpg",
     languages: ["Arabe", "Français"],
     memberSince: new Date("2022-01-10"),
@@ -76,21 +102,27 @@ db.users.insertMany([
   },
   {
     _id: userId4,
-    name: "Sofia Cherkaoui",
-    email: "sofia@airbnb-clone.ma",
-    passwordHash: "$2b$10$Hashed_password_sofia",
-    role: "voyageur",
-    avatar: "https://randomuser.me/api/portraits/women/4.jpg",
-    languages: ["Arabe", "Français", "Espagnol"],
+    name: "Hamza Mantrach",
+    nom: "Hamza Mantrach",
+    login: "mantrach",
+    motDePasse: "mantrach",
+    email: "mantrach@emi.ac.ma",
+    passwordHash: "$2b$10$Hashed_password_mantrach",
+    role: "hote",
+    avatar: "https://randomuser.me/api/portraits/men/4.jpg",
+    languages: ["Arabe", "Français"],
     memberSince: new Date("2022-06-05"),
     avgRating: 4.7
   },
   {
     _id: userId5,
-    name: "Karim Idrissi",
-    email: "karim@airbnb-clone.ma",
-    passwordHash: "$2b$10$Hashed_password_karim",
-    role: "voyageur",
+    name: "Anass Gharbi",
+    nom: "Anass Gharbi",
+    login: "gharbi",
+    motDePasse: "gharbi",
+    email: "gharbi@emi.ac.ma",
+    passwordHash: "$2b$10$Hashed_password_gharbi",
+    role: "hote",
     avatar: "https://randomuser.me/api/portraits/men/5.jpg",
     languages: ["Arabe", "Anglais"],
     memberSince: new Date("2023-02-20"),
@@ -315,131 +347,88 @@ db.annonces.insertMany([
 print("✓ 8 annonces insérées");
 
 // ════════════════════════════════════════════════════════════
-// 3. RESERVATIONS (10 réservations)
+// 3. RESERVATIONS (23 réservations — chaque user réserve chez les AUTRES, jamais chez soi)
+// Règle : admin(a1)→b1,b2 | khelifi(a3)→b3,b4 | mantrach(a4)→b5,b6 | gharbi(a5)→b7,b8
 // ════════════════════════════════════════════════════════════
 db.reservations.insertMany([
-  {
-    _id: reservId1,
-    annonceId: annonceId1,
-    voyageurId: userId3,
-    dateArrivee: new Date("2026-02-01"),
-    dateDepart: new Date("2026-02-07"),
-    prixTotal: 2700,
-    statut: "terminee",
-    nbVoyageurs: 2,
-    fraisAnnulation: 0,
-    createdAt: new Date("2026-01-20")
-  },
-  {
-    _id: reservId2,
-    annonceId: annonceId2,
-    voyageurId: userId4,
-    dateArrivee: new Date("2026-03-01"),
-    dateDepart: new Date("2026-03-05"),
-    prixTotal: 3400,
-    statut: "terminee",
-    nbVoyageurs: 4,
-    fraisAnnulation: 0,
-    createdAt: new Date("2026-02-15")
-  },
-  {
-    _id: reservId3,
-    annonceId: annonceId3,
-    voyageurId: userId5,
-    dateArrivee: new Date("2026-04-10"),
-    dateDepart: new Date("2026-04-17"),
-    prixTotal: 15400,
-    statut: "confirmee",
-    nbVoyageurs: 8,
-    fraisAnnulation: 0,
-    createdAt: new Date("2026-03-25")
-  },
-  {
-    _id: reservId4,
-    annonceId: annonceId4,
-    voyageurId: userId3,
-    dateArrivee: new Date("2026-05-15"),
-    dateDepart: new Date("2026-05-20"),
-    prixTotal: 1600,
-    statut: "confirmee",
-    nbVoyageurs: 2,
-    fraisAnnulation: 0,
-    createdAt: new Date("2026-05-01")
-  },
-  {
-    _id: reservId5,
-    annonceId: annonceId5,
-    voyageurId: userId4,
-    dateArrivee: new Date("2026-06-01"),
-    dateDepart: new Date("2026-06-08"),
-    prixTotal: 4550,
-    statut: "terminee",
-    nbVoyageurs: 6,
-    fraisAnnulation: 0,
-    createdAt: new Date("2026-05-10")
-  },
-  {
-    _id: reservId6,
-    annonceId: annonceId1,
-    voyageurId: userId5,
-    dateArrivee: new Date("2026-07-10"),
-    dateDepart: new Date("2026-07-15"),
-    prixTotal: 2250,
-    statut: "annulee",
-    nbVoyageurs: 3,
-    fraisAnnulation: 225,
-    createdAt: new Date("2026-06-20")
-  },
-  {
-    _id: reservId7,
-    annonceId: annonceId6,
-    voyageurId: userId3,
-    dateArrivee: new Date("2026-08-01"),
-    dateDepart: new Date("2026-08-05"),
-    prixTotal: 720,
-    statut: "terminee",
-    nbVoyageurs: 2,
-    fraisAnnulation: 0,
-    createdAt: new Date("2026-07-15")
-  },
-  {
-    _id: reservId8,
-    annonceId: annonceId7,
-    voyageurId: userId4,
-    dateArrivee: new Date("2026-09-20"),
-    dateDepart: new Date("2026-09-25"),
-    prixTotal: 1400,
-    statut: "confirmee",
-    nbVoyageurs: 2,
-    fraisAnnulation: 0,
-    createdAt: new Date("2026-09-01")
-  },
-  {
-    _id: reservId9,
-    annonceId: annonceId8,
-    voyageurId: userId5,
-    dateArrivee: new Date("2026-10-05"),
-    dateDepart: new Date("2026-10-10"),
-    prixTotal: 17500,
-    statut: "en_attente",
-    nbVoyageurs: 6,
-    fraisAnnulation: 0,
-    createdAt: new Date("2026-09-28")
-  },
-  {
-    _id: reservId10,
-    annonceId: annonceId2,
-    voyageurId: userId3,
-    dateArrivee: new Date("2026-12-20"),
-    dateDepart: new Date("2026-12-31"),
-    prixTotal: 9350,
-    statut: "confirmee",
-    nbVoyageurs: 4,
-    fraisAnnulation: 0,
-    createdAt: new Date("2026-11-01")
-  }
+  // ── khelifi comme voyageur (réserve chez admin, mantrach, gharbi) ───
+  { _id: reservId_k1, annonceId: annonceId2, voyageurId: userId3,
+    dateArrivee: new Date("2026-02-01"), dateDepart: new Date("2026-02-07"),
+    prixTotal: 5100, statut: "terminee", nbVoyageurs: 2, fraisAnnulation: 0, createdAt: new Date("2026-01-15") },
+  { _id: reservId_k2, annonceId: annonceId7, voyageurId: userId3,
+    dateArrivee: new Date("2026-03-15"), dateDepart: new Date("2026-03-20"),
+    prixTotal: 1400, statut: "terminee", nbVoyageurs: 1, fraisAnnulation: 0, createdAt: new Date("2026-03-01") },
+  { _id: reservId_k3, annonceId: annonceId8, voyageurId: userId3,
+    dateArrivee: new Date("2026-05-10"), dateDepart: new Date("2026-05-15"),
+    prixTotal: 17500, statut: "terminee", nbVoyageurs: 1, fraisAnnulation: 0, createdAt: new Date("2026-04-20") },
+  { _id: reservId_k4, annonceId: annonceId1, voyageurId: userId3,
+    dateArrivee: new Date("2026-07-01"), dateDepart: new Date("2026-07-06"),
+    prixTotal: 2250, statut: "confirmee", nbVoyageurs: 1, fraisAnnulation: 0, createdAt: new Date("2026-06-01") },
+  { _id: reservId_k5, annonceId: annonceId6, voyageurId: userId3,
+    dateArrivee: new Date("2026-09-01"), dateDepart: new Date("2026-09-05"),
+    prixTotal: 720, statut: "confirmee", nbVoyageurs: 1, fraisAnnulation: 0, createdAt: new Date("2026-08-01") },
+  { _id: reservId_k6, annonceId: annonceId5, voyageurId: userId3,
+    dateArrivee: new Date("2026-11-20"), dateDepart: new Date("2026-11-27"),
+    prixTotal: 4550, statut: "en_attente", nbVoyageurs: 2, fraisAnnulation: 0, createdAt: new Date("2026-10-15") },
+
+  // ── mantrach comme voyageur (réserve chez khelifi, admin, gharbi) ───
+  { _id: reservId_m1, annonceId: annonceId3, voyageurId: userId4,
+    dateArrivee: new Date("2026-02-10"), dateDepart: new Date("2026-02-17"),
+    prixTotal: 15400, statut: "terminee", nbVoyageurs: 2, fraisAnnulation: 0, createdAt: new Date("2026-01-20") },
+  { _id: reservId_m2, annonceId: annonceId1, voyageurId: userId4,
+    dateArrivee: new Date("2026-04-01"), dateDepart: new Date("2026-04-05"),
+    prixTotal: 1800, statut: "terminee", nbVoyageurs: 1, fraisAnnulation: 0, createdAt: new Date("2026-03-15") },
+  { _id: reservId_m3, annonceId: annonceId7, voyageurId: userId4,
+    dateArrivee: new Date("2026-06-20"), dateDepart: new Date("2026-06-25"),
+    prixTotal: 1400, statut: "confirmee", nbVoyageurs: 1, fraisAnnulation: 0, createdAt: new Date("2026-06-01") },
+  { _id: reservId_m4, annonceId: annonceId8, voyageurId: userId4,
+    dateArrivee: new Date("2026-08-05"), dateDepart: new Date("2026-08-10"),
+    prixTotal: 17500, statut: "confirmee", nbVoyageurs: 2, fraisAnnulation: 0, createdAt: new Date("2026-07-01") },
+  { _id: reservId_m5, annonceId: annonceId4, voyageurId: userId4,
+    dateArrivee: new Date("2026-10-01"), dateDepart: new Date("2026-10-06"),
+    prixTotal: 1600, statut: "annulee", nbVoyageurs: 1, fraisAnnulation: 160, createdAt: new Date("2026-09-01") },
+  { _id: reservId_m6, annonceId: annonceId2, voyageurId: userId4,
+    dateArrivee: new Date("2026-12-20"), dateDepart: new Date("2026-12-31"),
+    prixTotal: 9350, statut: "confirmee", nbVoyageurs: 2, fraisAnnulation: 0, createdAt: new Date("2026-11-15") },
+
+  // ── gharbi comme voyageur (réserve chez admin, khelifi, mantrach) ───
+  { _id: reservId_g1, annonceId: annonceId1, voyageurId: userId5,
+    dateArrivee: new Date("2026-03-05"), dateDepart: new Date("2026-03-10"),
+    prixTotal: 2250, statut: "terminee", nbVoyageurs: 1, fraisAnnulation: 0, createdAt: new Date("2026-02-15") },
+  { _id: reservId_g2, annonceId: annonceId5, voyageurId: userId5,
+    dateArrivee: new Date("2026-05-01"), dateDepart: new Date("2026-05-08"),
+    prixTotal: 4550, statut: "terminee", nbVoyageurs: 2, fraisAnnulation: 0, createdAt: new Date("2026-04-01") },
+  { _id: reservId_g3, annonceId: annonceId3, voyageurId: userId5,
+    dateArrivee: new Date("2026-07-10"), dateDepart: new Date("2026-07-17"),
+    prixTotal: 15400, statut: "confirmee", nbVoyageurs: 2, fraisAnnulation: 0, createdAt: new Date("2026-06-15") },
+  { _id: reservId_g4, annonceId: annonceId6, voyageurId: userId5,
+    dateArrivee: new Date("2026-08-15"), dateDepart: new Date("2026-08-20"),
+    prixTotal: 900, statut: "confirmee", nbVoyageurs: 1, fraisAnnulation: 0, createdAt: new Date("2026-07-20") },
+  { _id: reservId_g5, annonceId: annonceId2, voyageurId: userId5,
+    dateArrivee: new Date("2026-11-01"), dateDepart: new Date("2026-11-08"),
+    prixTotal: 5950, statut: "en_attente", nbVoyageurs: 2, fraisAnnulation: 0, createdAt: new Date("2026-10-01") },
+  { _id: reservId_g6, annonceId: annonceId4, voyageurId: userId5,
+    dateArrivee: new Date("2026-12-15"), dateDepart: new Date("2026-12-20"),
+    prixTotal: 1600, statut: "confirmee", nbVoyageurs: 1, fraisAnnulation: 0, createdAt: new Date("2026-11-20") },
+
+  // ── admin comme voyageur (réserve chez khelifi, mantrach, gharbi) ───
+  { _id: reservId_a1, annonceId: annonceId3, voyageurId: userId1,
+    dateArrivee: new Date("2026-04-10"), dateDepart: new Date("2026-04-17"),
+    prixTotal: 15400, statut: "terminee", nbVoyageurs: 2, fraisAnnulation: 0, createdAt: new Date("2026-03-20") },
+  { _id: reservId_a2, annonceId: annonceId8, voyageurId: userId1,
+    dateArrivee: new Date("2026-06-01"), dateDepart: new Date("2026-06-06"),
+    prixTotal: 17500, statut: "confirmee", nbVoyageurs: 2, fraisAnnulation: 0, createdAt: new Date("2026-05-15") },
+  { _id: reservId_a3, annonceId: annonceId5, voyageurId: userId1,
+    dateArrivee: new Date("2026-08-01"), dateDepart: new Date("2026-08-08"),
+    prixTotal: 4550, statut: "confirmee", nbVoyageurs: 2, fraisAnnulation: 0, createdAt: new Date("2026-07-10") },
+  { _id: reservId_a4, annonceId: annonceId7, voyageurId: userId1,
+    dateArrivee: new Date("2026-09-20"), dateDepart: new Date("2026-09-25"),
+    prixTotal: 1400, statut: "confirmee", nbVoyageurs: 1, fraisAnnulation: 0, createdAt: new Date("2026-08-25") },
+  { _id: reservId_a5, annonceId: annonceId6, voyageurId: userId1,
+    dateArrivee: new Date("2026-01-05"), dateDepart: new Date("2026-01-10"),
+    prixTotal: 900, statut: "terminee", nbVoyageurs: 1, fraisAnnulation: 0, createdAt: new Date("2025-12-15") }
 ]);
-print("✓ 10 réservations insérées");
+print("✓ 23 réservations insérées (logique hôte/voyageur respectée)");
 
 // ════════════════════════════════════════════════════════════
 // 4. AVIS (15 avis)
