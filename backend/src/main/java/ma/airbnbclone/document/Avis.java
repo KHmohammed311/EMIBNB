@@ -23,6 +23,8 @@ public class Avis {
     @NotBlank(message = "L'identifiant de l'auteur est obligatoire")
     private String auteurId;
 
+    private String auteurNom;   // rempli automatiquement par AvisService
+
     @NotBlank(message = "L'identifiant de la réservation est obligatoire")
     private String reservationId;
 

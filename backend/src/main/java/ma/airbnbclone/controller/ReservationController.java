@@ -18,10 +18,22 @@ public class ReservationController {
 
     private final ReservationService reservationService;
 
-    // GET /api/reservations
+    // GET /api/reservations (admin — tout)
     @GetMapping
     public ResponseEntity<List<Reservation>> lister() {
         return ResponseEntity.ok(reservationService.findAll());
+    }
+
+    // GET /api/reservations/voyageur/{userId} — réservations faites PAR cet utilisateur
+    @GetMapping("/voyageur/{userId}")
+    public ResponseEntity<List<Reservation>> mesReservations(@PathVariable String userId) {
+        return ResponseEntity.ok(reservationService.findByVoyageurId(userId));
+    }
+
+    // GET /api/reservations/hote/{hoteId} — réservations reçues sur les annonces de cet hôte
+    @GetMapping("/hote/{hoteId}")
+    public ResponseEntity<List<Reservation>> reservationsRecues(@PathVariable String hoteId) {
+        return ResponseEntity.ok(reservationService.findByHoteId(hoteId));
     }
 
     // GET /api/reservations/{id}

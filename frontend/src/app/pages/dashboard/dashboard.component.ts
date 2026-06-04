@@ -148,10 +148,11 @@ import { Annonce, Reservation } from '../../models/models';
         </div>
       </div>
 
-      <!-- Réservations reçues -->
+      <!-- Réservations reçues sur mes annonces (rôle hôte) -->
       <div class="section">
-        <h2>Réservations reçues ({{ reservations.length }})</h2>
-        <div class="reserv-table">
+        <h2>🏠 Réservations reçues ({{ reservations.length }})</h2>
+        <p class="section-sub" *ngIf="!reservations.length">Aucune réservation sur vos annonces pour l'instant.</p>
+        <div class="reserv-table" *ngIf="reservations.length">
           <table>
             <thead>
               <tr>
@@ -166,7 +167,7 @@ import { Annonce, Reservation } from '../../models/models';
             </thead>
             <tbody>
               <tr *ngFor="let r of reservations">
-                <td>{{ titreAnnonce(r.annonceId) }}</td>
+                <td><a [routerLink]="['/annonces', r.annonceId]" class="lien-annonce">{{ titreAnnonce(r.annonceId) }}</a></td>
                 <td>{{ r.dateArrivee | date:'dd/MM/yyyy' }}</td>
                 <td>{{ r.dateDepart | date:'dd/MM/yyyy' }}</td>
                 <td>{{ r.nbVoyageurs }}</td>
@@ -180,6 +181,38 @@ import { Annonce, Reservation } from '../../models/models';
                           class="btn-action annuler"
                           (click)="changerStatut(r.id!, 'annulee')">Annuler</button>
                 </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Mes voyages (rôle voyageur) -->
+      <div class="section">
+        <h2>✈️ Mes voyages ({{ mesVoyages.length }})</h2>
+        <p class="section-sub" *ngIf="!mesVoyages.length">Vous n'avez pas encore effectué de réservation.</p>
+        <div class="reserv-table" *ngIf="mesVoyages.length">
+          <table>
+            <thead>
+              <tr>
+                <th>Logement</th>
+                <th>Ville</th>
+                <th>Arrivée</th>
+                <th>Départ</th>
+                <th>Voyageurs</th>
+                <th>Total</th>
+                <th>Statut</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let r of mesVoyages">
+                <td><a [routerLink]="['/annonces', r.annonceId]" class="lien-annonce">{{ titreAnnonceGlobal(r.annonceId) }}</a></td>
+                <td>{{ villeAnnonce(r.annonceId) }}</td>
+                <td>{{ r.dateArrivee | date:'dd/MM/yyyy' }}</td>
+                <td>{{ r.dateDepart | date:'dd/MM/yyyy' }}</td>
+                <td>{{ r.nbVoyageurs }}</td>
+                <td>{{ r.prixTotal | number }} MAD</td>
+                <td><span class="statut-badge" [class]="r.statut">{{ statutFr(r.statut) }}</span></td>
               </tr>
             </tbody>
           </table>
@@ -246,11 +279,16 @@ import { Annonce, Reservation } from '../../models/models';
     .statut-badge.en_attente { background:#fff3e0; color:#e65100; }
     .statut-badge.annulee    { background:#fde8e8; color:#c0392b; }
     .statut-badge.terminee   { background:#f0f0f0; color:#555; }
+    .section-sub { color:#aaa; font-size:.9rem; margin-bottom:1rem; }
+    .lien-annonce { color:#1a6db5; text-decoration:none; font-weight:500; }
+    .lien-annonce:hover { text-decoration:underline; }
   `]
 })
 export class DashboardComponent implements OnInit {
-  annonces: Annonce[] = [];
-  reservations: Reservation[] = [];
+  annonces: Annonce[] = [];           // mes annonces (rôle hôte)
+  toutesAnnonces: Annonce[] = [];     // toutes les annonces (pour noms dans "Mes voyages")
+  reservations: Reservation[] = [];   // réservations REÇUES sur mes annonces
+  mesVoyages: Reservation[] = [];     // réservations faites PAR moi
   afficherFormulaire = false;
   annonceCreee = false;
   erreurCreation = '';
@@ -290,20 +328,32 @@ export class DashboardComponent implements OnInit {
   chargerDonnees(): void {
     const userId = this.auth.currentUser?.userId ?? '';
     this.nouvelleAnnonce.hoteId = userId;
+
+    // Charger toutes les annonces (pour résoudre les noms dans "Mes voyages")
     this.annonceService.lister().subscribe(data => {
+      this.toutesAnnonces = data;
       this.annonces = data.filter(a => a.hoteId === userId);
       const notees = this.annonces.filter(a => (a.noteMoyenne ?? 0) > 0);
       if (notees.length) {
         const moy = notees.reduce((s, a) => s + (a.noteMoyenne ?? 0), 0) / notees.length;
         this.noteMoyenne = moy.toFixed(1);
+      } else {
+        this.noteMoyenne = '—';
       }
     });
-    this.reservationService.lister().subscribe(data => {
+
+    // Réservations reçues sur MES annonces (rôle hôte)
+    this.reservationService.reservationsRecues(userId).subscribe(data => {
       this.reservations = data;
       this.reservationsConfirmees = data.filter(r => r.statut === 'confirmee').length;
       this.revenuTotal = data
         .filter(r => r.statut === 'confirmee' || r.statut === 'terminee')
         .reduce((s, r) => s + (r.prixTotal ?? 0), 0);
+    });
+
+    // Mes propres réservations (rôle voyageur)
+    this.reservationService.mesReservations(userId).subscribe(data => {
+      this.mesVoyages = data;
     });
   }
 
@@ -358,8 +408,18 @@ export class DashboardComponent implements OnInit {
     );
   }
 
+  // Titre depuis MES annonces (section "Réservations reçues")
   titreAnnonce(annonceId: string): string {
     return this.annonces.find(a => a.id === annonceId)?.titre ?? annonceId.slice(-4);
+  }
+
+  // Titre depuis TOUTES les annonces (section "Mes voyages")
+  titreAnnonceGlobal(annonceId: string): string {
+    return this.toutesAnnonces.find(a => a.id === annonceId)?.titre ?? '…';
+  }
+
+  villeAnnonce(annonceId: string): string {
+    return this.toutesAnnonces.find(a => a.id === annonceId)?.localisation?.ville ?? '—';
   }
 
   statutFr(statut?: string): string {

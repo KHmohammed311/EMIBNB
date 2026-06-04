@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +25,21 @@ public class ReservationService {
 
     public List<Reservation> findAll() {
         return reservationRepository.findAll();
+    }
+
+    /** Réservations faites PAR un voyageur (son historique) */
+    public List<Reservation> findByVoyageurId(String voyageurId) {
+        return reservationRepository.findByVoyageurId(voyageurId);
+    }
+
+    /** Réservations reçues sur les annonces d'un hôte */
+    public List<Reservation> findByHoteId(String hoteId) {
+        List<String> annonceIds = annonceRepository.findByHoteId(hoteId)
+                .stream().map(a -> a.getId()).collect(Collectors.toList());
+        if (annonceIds.isEmpty()) return List.of();
+        return annonceIds.stream()
+                .flatMap(id -> reservationRepository.findByAnnonceId(id).stream())
+                .collect(Collectors.toList());
     }
 
     public Reservation findById(String id) {

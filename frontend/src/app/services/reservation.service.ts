@@ -14,6 +14,14 @@ export class ReservationService {
     return this.http.get<Reservation[]>(this.baseUrl);
   }
 
+  mesReservations(voyageurId: string): Observable<Reservation[]> {
+    return this.http.get<Reservation[]>(`${this.baseUrl}/voyageur/${voyageurId}`);
+  }
+
+  reservationsRecues(hoteId: string): Observable<Reservation[]> {
+    return this.http.get<Reservation[]>(`${this.baseUrl}/hote/${hoteId}`);
+  }
+
   detail(id: string): Observable<Reservation> {
     return this.http.get<Reservation>(`${this.baseUrl}/${id}`);
   }
