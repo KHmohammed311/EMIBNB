@@ -2,22 +2,14 @@ version: '3.8'
 
 services:
 
-  # ── MongoDB ──────────────────────────────────────────────────
-  mongo:
-    image: mongo:7
-    container_name: mongo
-    restart: unless-stopped
-    ports:
-      - "27020:27017"   # Compass/Compass → mongodb://localhost:27020/
-    volumes:
-      - mongo-data:/data/db
-    networks:
-      - airbnb-net
-    healthcheck:
-      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+  # ── MongoDB Replica Set ──────────────────────────────────────
+  # Les 3 nœuds (mongo-primary, mongo-secondary1, mongo-secondary2)
+  # sont gérés par docker/docker-compose-replicaset.yml
+  # Ils sont connectés à airbnb-net via :
+  #   docker network connect monbodb_airbnb-net mongo-primary
+  #   docker network connect monbodb_airbnb-net mongo-secondary1
+  #   docker network connect monbodb_airbnb-net mongo-secondary2
+  # Compass : mongodb://localhost:27017/ (ou 27020 si conflit)
 
   # ── Neo4j ────────────────────────────────────────────────────
   neo4j:
@@ -73,15 +65,13 @@ services:
     container_name: backend
     restart: unless-stopped
     depends_on:
-      mongo:
-        condition: service_healthy
       neo4j:
         condition: service_healthy
       neo4j-init:
         condition: service_completed_successfully
     environment:
-      # Surcharge application.properties pour Docker
-      - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/airbnb_clone
+      # Connexion au Replica Set MongoDB (3 nœuds)
+      - SPRING_DATA_MONGODB_URI=mongodb://mongo-primary:27017,mongo-secondary1:27018,mongo-secondary2:27019/airbnb_clone?replicaSet=rs0
       - SPRING_DATA_MONGODB_DATABASE=airbnb_clone
       - SPRING_NEO4J_URI=bolt://neo4j:7687
       - SPRING_NEO4J_AUTHENTICATION_USERNAME=neo4j
@@ -125,5 +115,4 @@ networks:
     driver: bridge
 
 volumes:
-  mongo-data:
   neo4j-data:
