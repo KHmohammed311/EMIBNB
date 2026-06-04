@@ -131,7 +131,7 @@ db.annonces.insertMany([
         auteurNom: "Mehdi Bouchaib",
         note: 5,
         commentaire: "Appartement impeccable, hôte très accueillant !",
-        createdAt: new Date("2024-02-10")
+        createdAt: new Date("2026-02-10")
       }
     ]
   },
@@ -163,7 +163,7 @@ db.annonces.insertMany([
         auteurNom: "Sofia Cherkaoui",
         note: 5,
         commentaire: "Le riad de mes rêves ! Chaque détail est soigné.",
-        createdAt: new Date("2024-03-05")
+        createdAt: new Date("2026-03-05")
       }
     ]
   },
@@ -322,121 +322,121 @@ db.reservations.insertMany([
     _id: reservId1,
     annonceId: annonceId1,
     voyageurId: userId3,
-    dateArrivee: new Date("2024-02-01"),
-    dateDepart: new Date("2024-02-07"),
+    dateArrivee: new Date("2026-02-01"),
+    dateDepart: new Date("2026-02-07"),
     prixTotal: 2700,
     statut: "terminee",
     nbVoyageurs: 2,
     fraisAnnulation: 0,
-    createdAt: new Date("2024-01-20")
+    createdAt: new Date("2026-01-20")
   },
   {
     _id: reservId2,
     annonceId: annonceId2,
     voyageurId: userId4,
-    dateArrivee: new Date("2024-03-01"),
-    dateDepart: new Date("2024-03-05"),
+    dateArrivee: new Date("2026-03-01"),
+    dateDepart: new Date("2026-03-05"),
     prixTotal: 3400,
     statut: "terminee",
     nbVoyageurs: 4,
     fraisAnnulation: 0,
-    createdAt: new Date("2024-02-15")
+    createdAt: new Date("2026-02-15")
   },
   {
     _id: reservId3,
     annonceId: annonceId3,
     voyageurId: userId5,
-    dateArrivee: new Date("2024-04-10"),
-    dateDepart: new Date("2024-04-17"),
+    dateArrivee: new Date("2026-04-10"),
+    dateDepart: new Date("2026-04-17"),
     prixTotal: 15400,
     statut: "confirmee",
     nbVoyageurs: 8,
     fraisAnnulation: 0,
-    createdAt: new Date("2024-03-25")
+    createdAt: new Date("2026-03-25")
   },
   {
     _id: reservId4,
     annonceId: annonceId4,
     voyageurId: userId3,
-    dateArrivee: new Date("2024-05-15"),
-    dateDepart: new Date("2024-05-20"),
+    dateArrivee: new Date("2026-05-15"),
+    dateDepart: new Date("2026-05-20"),
     prixTotal: 1600,
     statut: "confirmee",
     nbVoyageurs: 2,
     fraisAnnulation: 0,
-    createdAt: new Date("2024-05-01")
+    createdAt: new Date("2026-05-01")
   },
   {
     _id: reservId5,
     annonceId: annonceId5,
     voyageurId: userId4,
-    dateArrivee: new Date("2024-06-01"),
-    dateDepart: new Date("2024-06-08"),
+    dateArrivee: new Date("2026-06-01"),
+    dateDepart: new Date("2026-06-08"),
     prixTotal: 4550,
     statut: "terminee",
     nbVoyageurs: 6,
     fraisAnnulation: 0,
-    createdAt: new Date("2024-05-10")
+    createdAt: new Date("2026-05-10")
   },
   {
     _id: reservId6,
     annonceId: annonceId1,
     voyageurId: userId5,
-    dateArrivee: new Date("2024-07-10"),
-    dateDepart: new Date("2024-07-15"),
+    dateArrivee: new Date("2026-07-10"),
+    dateDepart: new Date("2026-07-15"),
     prixTotal: 2250,
     statut: "annulee",
     nbVoyageurs: 3,
     fraisAnnulation: 225,
-    createdAt: new Date("2024-06-20")
+    createdAt: new Date("2026-06-20")
   },
   {
     _id: reservId7,
     annonceId: annonceId6,
     voyageurId: userId3,
-    dateArrivee: new Date("2024-08-01"),
-    dateDepart: new Date("2024-08-05"),
+    dateArrivee: new Date("2026-08-01"),
+    dateDepart: new Date("2026-08-05"),
     prixTotal: 720,
     statut: "terminee",
     nbVoyageurs: 2,
     fraisAnnulation: 0,
-    createdAt: new Date("2024-07-15")
+    createdAt: new Date("2026-07-15")
   },
   {
     _id: reservId8,
     annonceId: annonceId7,
     voyageurId: userId4,
-    dateArrivee: new Date("2024-09-20"),
-    dateDepart: new Date("2024-09-25"),
+    dateArrivee: new Date("2026-09-20"),
+    dateDepart: new Date("2026-09-25"),
     prixTotal: 1400,
     statut: "confirmee",
     nbVoyageurs: 2,
     fraisAnnulation: 0,
-    createdAt: new Date("2024-09-01")
+    createdAt: new Date("2026-09-01")
   },
   {
     _id: reservId9,
     annonceId: annonceId8,
     voyageurId: userId5,
-    dateArrivee: new Date("2024-10-05"),
-    dateDepart: new Date("2024-10-10"),
+    dateArrivee: new Date("2026-10-05"),
+    dateDepart: new Date("2026-10-10"),
     prixTotal: 17500,
     statut: "en_attente",
     nbVoyageurs: 6,
     fraisAnnulation: 0,
-    createdAt: new Date("2024-09-28")
+    createdAt: new Date("2026-09-28")
   },
   {
     _id: reservId10,
     annonceId: annonceId2,
     voyageurId: userId3,
-    dateArrivee: new Date("2024-12-20"),
-    dateDepart: new Date("2024-12-31"),
+    dateArrivee: new Date("2026-12-20"),
+    dateDepart: new Date("2026-12-31"),
     prixTotal: 9350,
     statut: "confirmee",
     nbVoyageurs: 4,
     fraisAnnulation: 0,
-    createdAt: new Date("2024-11-01")
+    createdAt: new Date("2026-11-01")
   }
 ]);
 print("✓ 10 réservations insérées");
@@ -446,33 +446,33 @@ print("✓ 10 réservations insérées");
 // ════════════════════════════════════════════════════════════
 db.avis.insertMany([
   // Avis sur l'annonce 1 (Casablanca)
-  { _id: new ObjectId(), cibleId: annonceId1, cibleType: "annonce", auteurId: userId3, reservationId: reservId1, note: 5, commentaire: "Appartement impeccable, hôte très accueillant !", createdAt: new Date("2024-02-10") },
-  { _id: new ObjectId(), cibleId: annonceId1, cibleType: "annonce", auteurId: userId4, reservationId: reservId1, note: 5, commentaire: "Excellent séjour, tout était parfait. Je recommande vivement.", createdAt: new Date("2024-02-12") },
-  { _id: new ObjectId(), cibleId: annonceId1, cibleType: "annonce", auteurId: userId5, reservationId: reservId6, note: 4, commentaire: "Très bon appartement, emplacement idéal.", createdAt: new Date("2024-02-15") },
+  { _id: new ObjectId(), cibleId: annonceId1, cibleType: "annonce", auteurId: userId3, reservationId: reservId1, note: 5, commentaire: "Appartement impeccable, hôte très accueillant !", createdAt: new Date("2026-02-10") },
+  { _id: new ObjectId(), cibleId: annonceId1, cibleType: "annonce", auteurId: userId4, reservationId: reservId1, note: 5, commentaire: "Excellent séjour, tout était parfait. Je recommande vivement.", createdAt: new Date("2026-02-12") },
+  { _id: new ObjectId(), cibleId: annonceId1, cibleType: "annonce", auteurId: userId5, reservationId: reservId6, note: 4, commentaire: "Très bon appartement, emplacement idéal.", createdAt: new Date("2026-02-15") },
 
   // Avis sur l'annonce 2 (Marrakech riad)
-  { _id: new ObjectId(), cibleId: annonceId2, cibleType: "annonce", auteurId: userId4, reservationId: reservId2, note: 5, commentaire: "Le riad de mes rêves ! Chaque détail est soigné.", createdAt: new Date("2024-03-05") },
-  { _id: new ObjectId(), cibleId: annonceId2, cibleType: "annonce", auteurId: userId3, reservationId: reservId2, note: 5, commentaire: "Expérience inoubliable, le hammam est magnifique.", createdAt: new Date("2024-03-08") },
-  { _id: new ObjectId(), cibleId: annonceId2, cibleType: "annonce", auteurId: userId5, reservationId: reservId10, note: 5, commentaire: "Parfait pour Noël à Marrakech, service impeccable.", createdAt: new Date("2024-03-10") },
+  { _id: new ObjectId(), cibleId: annonceId2, cibleType: "annonce", auteurId: userId4, reservationId: reservId2, note: 5, commentaire: "Le riad de mes rêves ! Chaque détail est soigné.", createdAt: new Date("2026-03-05") },
+  { _id: new ObjectId(), cibleId: annonceId2, cibleType: "annonce", auteurId: userId3, reservationId: reservId2, note: 5, commentaire: "Expérience inoubliable, le hammam est magnifique.", createdAt: new Date("2026-03-08") },
+  { _id: new ObjectId(), cibleId: annonceId2, cibleType: "annonce", auteurId: userId5, reservationId: reservId10, note: 5, commentaire: "Parfait pour Noël à Marrakech, service impeccable.", createdAt: new Date("2026-03-10") },
 
   // Avis sur l'annonce 3 (Villa Marrakech)
-  { _id: new ObjectId(), cibleId: annonceId3, cibleType: "annonce", auteurId: userId5, reservationId: reservId3, note: 5, commentaire: "Villa de rêve, piscine chauffée, accueil parfait.", createdAt: new Date("2024-04-20") },
-  { _id: new ObjectId(), cibleId: annonceId3, cibleType: "annonce", auteurId: userId3, reservationId: reservId3, note: 4, commentaire: "Superbe villa, quelques petits détails à améliorer.", createdAt: new Date("2024-04-22") },
+  { _id: new ObjectId(), cibleId: annonceId3, cibleType: "annonce", auteurId: userId5, reservationId: reservId3, note: 5, commentaire: "Villa de rêve, piscine chauffée, accueil parfait.", createdAt: new Date("2026-04-20") },
+  { _id: new ObjectId(), cibleId: annonceId3, cibleType: "annonce", auteurId: userId3, reservationId: reservId3, note: 4, commentaire: "Superbe villa, quelques petits détails à améliorer.", createdAt: new Date("2026-04-22") },
 
   // Avis sur l'annonce 4 (Rabat)
-  { _id: new ObjectId(), cibleId: annonceId4, cibleType: "annonce", auteurId: userId3, reservationId: reservId4, note: 4, commentaire: "Appartement bien situé, propre et fonctionnel.", createdAt: new Date("2024-05-22") },
-  { _id: new ObjectId(), cibleId: annonceId4, cibleType: "annonce", auteurId: userId5, reservationId: reservId4, note: 5, commentaire: "Parfait pour visiter Rabat, hôte disponible et sympa.", createdAt: new Date("2024-05-25") },
+  { _id: new ObjectId(), cibleId: annonceId4, cibleType: "annonce", auteurId: userId3, reservationId: reservId4, note: 4, commentaire: "Appartement bien situé, propre et fonctionnel.", createdAt: new Date("2026-05-22") },
+  { _id: new ObjectId(), cibleId: annonceId4, cibleType: "annonce", auteurId: userId5, reservationId: reservId4, note: 5, commentaire: "Parfait pour visiter Rabat, hôte disponible et sympa.", createdAt: new Date("2026-05-25") },
 
   // Avis sur l'annonce 5 (Fès)
-  { _id: new ObjectId(), cibleId: annonceId5, cibleType: "annonce", auteurId: userId4, reservationId: reservId5, note: 5, commentaire: "La médina de Fès est magique, cette maison d'hôtes est idéale.", createdAt: new Date("2024-06-10") },
-  { _id: new ObjectId(), cibleId: annonceId5, cibleType: "annonce", auteurId: userId3, reservationId: reservId5, note: 4, commentaire: "Très belle expérience authentique dans la médina.", createdAt: new Date("2024-06-12") },
+  { _id: new ObjectId(), cibleId: annonceId5, cibleType: "annonce", auteurId: userId4, reservationId: reservId5, note: 5, commentaire: "La médina de Fès est magique, cette maison d'hôtes est idéale.", createdAt: new Date("2026-06-10") },
+  { _id: new ObjectId(), cibleId: annonceId5, cibleType: "annonce", auteurId: userId3, reservationId: reservId5, note: 4, commentaire: "Très belle expérience authentique dans la médina.", createdAt: new Date("2026-06-12") },
 
   // Avis sur l'annonce 6 (Chambre Marrakech)
-  { _id: new ObjectId(), cibleId: annonceId6, cibleType: "annonce", auteurId: userId3, reservationId: reservId7, note: 4, commentaire: "Chambre confortable, petit-déjeuner délicieux.", createdAt: new Date("2024-08-07") },
-  { _id: new ObjectId(), cibleId: annonceId6, cibleType: "annonce", auteurId: userId4, reservationId: reservId7, note: 4, commentaire: "Bon rapport qualité-prix pour Marrakech centre.", createdAt: new Date("2024-08-09") },
+  { _id: new ObjectId(), cibleId: annonceId6, cibleType: "annonce", auteurId: userId3, reservationId: reservId7, note: 4, commentaire: "Chambre confortable, petit-déjeuner délicieux.", createdAt: new Date("2026-08-07") },
+  { _id: new ObjectId(), cibleId: annonceId6, cibleType: "annonce", auteurId: userId4, reservationId: reservId7, note: 4, commentaire: "Bon rapport qualité-prix pour Marrakech centre.", createdAt: new Date("2026-08-09") },
 
   // Avis sur une activité
-  { _id: new ObjectId(), cibleId: activiteId1, cibleType: "activite", auteurId: userId3, reservationId: reservId5, note: 5, commentaire: "Visite guidée de la médina exceptionnelle, guide très cultivé.", createdAt: new Date("2024-06-15") }
+  { _id: new ObjectId(), cibleId: activiteId1, cibleType: "activite", auteurId: userId3, reservationId: reservId5, note: 5, commentaire: "Visite guidée de la médina exceptionnelle, guide très cultivé.", createdAt: new Date("2026-06-15") }
 ]);
 print("✓ 15 avis insérés");
 
@@ -539,7 +539,7 @@ db.activite_reservations.insertMany([
     _id: new ObjectId(),
     activiteId: activiteId1,
     voyageurId: userId3,
-    date: new Date("2024-06-09"),
+    date: new Date("2026-06-09"),
     nbParticipants: 2,
     prixTotal: 300,
     statut: "confirmee"
@@ -548,7 +548,7 @@ db.activite_reservations.insertMany([
     _id: new ObjectId(),
     activiteId: activiteId2,
     voyageurId: userId4,
-    date: new Date("2024-03-03"),
+    date: new Date("2026-03-03"),
     nbParticipants: 3,
     prixTotal: 750,
     statut: "confirmee"
@@ -557,7 +557,7 @@ db.activite_reservations.insertMany([
     _id: new ObjectId(),
     activiteId: activiteId3,
     voyageurId: userId5,
-    date: new Date("2024-04-14"),
+    date: new Date("2026-04-14"),
     nbParticipants: 4,
     prixTotal: 1600,
     statut: "confirmee"
@@ -566,7 +566,7 @@ db.activite_reservations.insertMany([
     _id: new ObjectId(),
     activiteId: activiteId4,
     voyageurId: userId3,
-    date: new Date("2024-09-22"),
+    date: new Date("2026-09-22"),
     nbParticipants: 2,
     prixTotal: 400,
     statut: "en_attente"
@@ -575,7 +575,7 @@ db.activite_reservations.insertMany([
     _id: new ObjectId(),
     activiteId: activiteId1,
     voyageurId: userId5,
-    date: new Date("2024-10-08"),
+    date: new Date("2026-10-08"),
     nbParticipants: 2,
     prixTotal: 300,
     statut: "annulee"
@@ -584,7 +584,7 @@ db.activite_reservations.insertMany([
     _id: new ObjectId(),
     activiteId: activiteId2,
     voyageurId: userId3,
-    date: new Date("2024-12-22"),
+    date: new Date("2026-12-22"),
     nbParticipants: 2,
     prixTotal: 500,
     statut: "en_attente"

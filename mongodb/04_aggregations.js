@@ -74,9 +74,9 @@ printjson(db.reservations.aggregate([
 ]).toArray());
 
 // ─── 4. Annonces disponibles entre deux dates ────────────────
-print("\n── 4. Annonces disponibles du 2024-11-01 au 2024-11-10 ─");
-const dateArrivee = new Date("2024-11-01");
-const dateDepart  = new Date("2024-11-10");
+print("\n── 4. Annonces disponibles du 2026-11-01 au 2026-11-10 ─");
+const dateArrivee = new Date("2026-11-01");
+const dateDepart  = new Date("2026-11-10");
 
 // Trouver les annonceIds déjà réservées sur ces dates
 const annoncesBloqueesIds = db.reservations.distinct("annonceId", {
