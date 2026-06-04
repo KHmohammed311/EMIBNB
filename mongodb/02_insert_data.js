@@ -160,7 +160,7 @@ db.annonces.insertMany([
     topAvis: [
       {
         auteurId: userId3,
-        auteurNom: "Mehdi Bouchaib",
+        auteurNom: "Mohammed Khelifi",
         note: 5,
         commentaire: "Appartement impeccable, hôte très accueillant !",
         createdAt: new Date("2026-02-10")
@@ -171,7 +171,7 @@ db.annonces.insertMany([
     _id: annonceId2,
     titre: "Riad traditionnel dans la médina de Marrakech",
     description: "Authentique riad du 18ème siècle entièrement restauré. Patio central avec fontaine, terrasse panoramique, hammam privatif. Une expérience marocaine unique au cœur de la médina.",
-    hoteId: userId2,
+    hoteId: userId1,  // admin
     type: "maison",
     prixParNuit: 850,
     maxVoyageurs: 6,
@@ -192,7 +192,7 @@ db.annonces.insertMany([
     topAvis: [
       {
         auteurId: userId4,
-        auteurNom: "Sofia Cherkaoui",
+        auteurNom: "Hamza Mantrach",
         note: 5,
         commentaire: "Le riad de mes rêves ! Chaque détail est soigné.",
         createdAt: new Date("2026-03-05")
@@ -203,7 +203,7 @@ db.annonces.insertMany([
     _id: annonceId3,
     titre: "Villa avec piscine à Marrakech Palmeraie",
     description: "Villa contemporaine de 400m² avec grande piscine privée, jardin arborisé et barbecue. Personnel de maison disponible sur demande. Parfaite pour les groupes et les célébrations.",
-    hoteId: userId1,
+    hoteId: userId3,  // khelifi
     type: "villa",
     prixParNuit: 2200,
     maxVoyageurs: 10,
@@ -227,7 +227,7 @@ db.annonces.insertMany([
     _id: annonceId4,
     titre: "Appartement cosy près du quartier Hassan, Rabat",
     description: "Appartement chaleureux à 5 minutes à pied de la Tour Hassan et de la Kasbah des Oudayas. Décoration soignée mêlant modernité et artisanat marocain.",
-    hoteId: userId2,
+    hoteId: userId3,  // khelifi
     type: "appartement",
     prixParNuit: 320,
     maxVoyageurs: 2,
@@ -251,7 +251,7 @@ db.annonces.insertMany([
     _id: annonceId5,
     titre: "Maison d'hôtes dans la médina de Fès",
     description: "Demeure ancestrale au cœur de Fès el-Bali, la plus ancienne médina du monde. 5 chambres, salon marocain, terrasse avec vue sur les tanneries. Un voyage dans le temps.",
-    hoteId: userId1,
+    hoteId: userId4,  // mantrach
     type: "maison",
     prixParNuit: 650,
     maxVoyageurs: 8,
@@ -275,7 +275,7 @@ db.annonces.insertMany([
     _id: annonceId6,
     titre: "Chambre privée dans riad — Marrakech centre",
     description: "Chambre confortable dans un riad familial authentique. Petit-déjeuner marocain inclus : msemen, amlou, thé à la menthe. Accès à la terrasse et au salon commun.",
-    hoteId: userId2,
+    hoteId: userId4,  // mantrach
     type: "chambre",
     prixParNuit: 180,
     maxVoyageurs: 2,
@@ -299,7 +299,7 @@ db.annonces.insertMany([
     _id: annonceId7,
     titre: "Studio design — Casablanca Anfa",
     description: "Studio entièrement équipé dans le quartier Anfa, à 10 minutes des plages. Design minimaliste, cuisine américaine, terrasse privée. Idéal pour un séjour en solo ou en couple.",
-    hoteId: userId1,
+    hoteId: userId5,  // gharbi
     type: "appartement",
     prixParNuit: 280,
     maxVoyageurs: 2,
@@ -323,7 +323,7 @@ db.annonces.insertMany([
     _id: annonceId8,
     titre: "Villa de luxe avec vue mer — Mohammedia",
     description: "Superbe villa contemporaine face à l'océan Atlantique. 4 chambres, piscine à débordement, accès direct à la plage privée. Personnel de service inclus.",
-    hoteId: userId2,
+    hoteId: userId5,  // gharbi
     type: "villa",
     prixParNuit: 3500,
     maxVoyageurs: 8,
@@ -435,33 +435,33 @@ print("✓ 23 réservations insérées (logique hôte/voyageur respectée)");
 // ════════════════════════════════════════════════════════════
 db.avis.insertMany([
   // Avis sur l'annonce 1 (Casablanca)
-  { _id: new ObjectId(), cibleId: annonceId1, cibleType: "annonce", auteurId: userId3, reservationId: reservId1, note: 5, commentaire: "Appartement impeccable, hôte très accueillant !", createdAt: new Date("2026-02-10") },
-  { _id: new ObjectId(), cibleId: annonceId1, cibleType: "annonce", auteurId: userId4, reservationId: reservId1, note: 5, commentaire: "Excellent séjour, tout était parfait. Je recommande vivement.", createdAt: new Date("2026-02-12") },
-  { _id: new ObjectId(), cibleId: annonceId1, cibleType: "annonce", auteurId: userId5, reservationId: reservId6, note: 4, commentaire: "Très bon appartement, emplacement idéal.", createdAt: new Date("2026-02-15") },
+  { _id: new ObjectId(), cibleId: annonceId1, cibleType: "annonce", auteurId: userId3, reservationId: reservId_k4, note: 5, commentaire: "Appartement impeccable, hôte très accueillant !", createdAt: new Date("2026-02-10") },
+  { _id: new ObjectId(), cibleId: annonceId1, cibleType: "annonce", auteurId: userId4, reservationId: reservId_k4, note: 5, commentaire: "Excellent séjour, tout était parfait. Je recommande vivement.", createdAt: new Date("2026-02-12") },
+  { _id: new ObjectId(), cibleId: annonceId1, cibleType: "annonce", auteurId: userId5, reservationId: reservId_g1, note: 4, commentaire: "Très bon appartement, emplacement idéal.", createdAt: new Date("2026-02-15") },
 
   // Avis sur l'annonce 2 (Marrakech riad)
-  { _id: new ObjectId(), cibleId: annonceId2, cibleType: "annonce", auteurId: userId4, reservationId: reservId2, note: 5, commentaire: "Le riad de mes rêves ! Chaque détail est soigné.", createdAt: new Date("2026-03-05") },
-  { _id: new ObjectId(), cibleId: annonceId2, cibleType: "annonce", auteurId: userId3, reservationId: reservId2, note: 5, commentaire: "Expérience inoubliable, le hammam est magnifique.", createdAt: new Date("2026-03-08") },
-  { _id: new ObjectId(), cibleId: annonceId2, cibleType: "annonce", auteurId: userId5, reservationId: reservId10, note: 5, commentaire: "Parfait pour Noël à Marrakech, service impeccable.", createdAt: new Date("2026-03-10") },
+  { _id: new ObjectId(), cibleId: annonceId2, cibleType: "annonce", auteurId: userId4, reservationId: reservId_m6, note: 5, commentaire: "Le riad de mes rêves ! Chaque détail est soigné.", createdAt: new Date("2026-03-05") },
+  { _id: new ObjectId(), cibleId: annonceId2, cibleType: "annonce", auteurId: userId3, reservationId: reservId_m6, note: 5, commentaire: "Expérience inoubliable, le hammam est magnifique.", createdAt: new Date("2026-03-08") },
+  { _id: new ObjectId(), cibleId: annonceId2, cibleType: "annonce", auteurId: userId5, reservationId: reservId_k1, note: 5, commentaire: "Parfait pour Noël à Marrakech, service impeccable.", createdAt: new Date("2026-03-10") },
 
   // Avis sur l'annonce 3 (Villa Marrakech)
-  { _id: new ObjectId(), cibleId: annonceId3, cibleType: "annonce", auteurId: userId5, reservationId: reservId3, note: 5, commentaire: "Villa de rêve, piscine chauffée, accueil parfait.", createdAt: new Date("2026-04-20") },
-  { _id: new ObjectId(), cibleId: annonceId3, cibleType: "annonce", auteurId: userId3, reservationId: reservId3, note: 4, commentaire: "Superbe villa, quelques petits détails à améliorer.", createdAt: new Date("2026-04-22") },
+  { _id: new ObjectId(), cibleId: annonceId3, cibleType: "annonce", auteurId: userId5, reservationId: reservId_g3, note: 5, commentaire: "Villa de rêve, piscine chauffée, accueil parfait.", createdAt: new Date("2026-04-20") },
+  { _id: new ObjectId(), cibleId: annonceId3, cibleType: "annonce", auteurId: userId3, reservationId: reservId_g3, note: 4, commentaire: "Superbe villa, quelques petits détails à améliorer.", createdAt: new Date("2026-04-22") },
 
   // Avis sur l'annonce 4 (Rabat)
-  { _id: new ObjectId(), cibleId: annonceId4, cibleType: "annonce", auteurId: userId3, reservationId: reservId4, note: 4, commentaire: "Appartement bien situé, propre et fonctionnel.", createdAt: new Date("2026-05-22") },
-  { _id: new ObjectId(), cibleId: annonceId4, cibleType: "annonce", auteurId: userId5, reservationId: reservId4, note: 5, commentaire: "Parfait pour visiter Rabat, hôte disponible et sympa.", createdAt: new Date("2026-05-25") },
+  { _id: new ObjectId(), cibleId: annonceId4, cibleType: "annonce", auteurId: userId3, reservationId: reservId_g6, note: 4, commentaire: "Appartement bien situé, propre et fonctionnel.", createdAt: new Date("2026-05-22") },
+  { _id: new ObjectId(), cibleId: annonceId4, cibleType: "annonce", auteurId: userId5, reservationId: reservId_g6, note: 5, commentaire: "Parfait pour visiter Rabat, hôte disponible et sympa.", createdAt: new Date("2026-05-25") },
 
   // Avis sur l'annonce 5 (Fès)
-  { _id: new ObjectId(), cibleId: annonceId5, cibleType: "annonce", auteurId: userId4, reservationId: reservId5, note: 5, commentaire: "La médina de Fès est magique, cette maison d'hôtes est idéale.", createdAt: new Date("2026-06-10") },
-  { _id: new ObjectId(), cibleId: annonceId5, cibleType: "annonce", auteurId: userId3, reservationId: reservId5, note: 4, commentaire: "Très belle expérience authentique dans la médina.", createdAt: new Date("2026-06-12") },
+  { _id: new ObjectId(), cibleId: annonceId5, cibleType: "annonce", auteurId: userId4, reservationId: reservId_g2, note: 5, commentaire: "La médina de Fès est magique, cette maison d'hôtes est idéale.", createdAt: new Date("2026-06-10") },
+  { _id: new ObjectId(), cibleId: annonceId5, cibleType: "annonce", auteurId: userId3, reservationId: reservId_g2, note: 4, commentaire: "Très belle expérience authentique dans la médina.", createdAt: new Date("2026-06-12") },
 
   // Avis sur l'annonce 6 (Chambre Marrakech)
-  { _id: new ObjectId(), cibleId: annonceId6, cibleType: "annonce", auteurId: userId3, reservationId: reservId7, note: 4, commentaire: "Chambre confortable, petit-déjeuner délicieux.", createdAt: new Date("2026-08-07") },
-  { _id: new ObjectId(), cibleId: annonceId6, cibleType: "annonce", auteurId: userId4, reservationId: reservId7, note: 4, commentaire: "Bon rapport qualité-prix pour Marrakech centre.", createdAt: new Date("2026-08-09") },
+  { _id: new ObjectId(), cibleId: annonceId6, cibleType: "annonce", auteurId: userId3, reservationId: reservId_k5, note: 4, commentaire: "Chambre confortable, petit-déjeuner délicieux.", createdAt: new Date("2026-08-07") },
+  { _id: new ObjectId(), cibleId: annonceId6, cibleType: "annonce", auteurId: userId4, reservationId: reservId_k5, note: 4, commentaire: "Bon rapport qualité-prix pour Marrakech centre.", createdAt: new Date("2026-08-09") },
 
   // Avis sur une activité
-  { _id: new ObjectId(), cibleId: activiteId1, cibleType: "activite", auteurId: userId3, reservationId: reservId5, note: 5, commentaire: "Visite guidée de la médina exceptionnelle, guide très cultivé.", createdAt: new Date("2026-06-15") }
+  { _id: new ObjectId(), cibleId: activiteId1, cibleType: "activite", auteurId: userId3, reservationId: reservId_g2, note: 5, commentaire: "Visite guidée de la médina exceptionnelle, guide très cultivé.", createdAt: new Date("2026-06-15") }
 ]);
 print("✓ 15 avis insérés");
 
