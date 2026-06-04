@@ -27,7 +27,7 @@ import { AuthService } from './services/auth.service';
       <router-outlet />
     </main>
     <footer class="footer" *ngIf="auth.isLoggedIn">
-      <p>© 2024 EMIBNB — Tous droits réservés</p>
+      <p>© 2026 EMIBNB — Tous droits réservés</p>
     </footer>
   `,
   styles: [`
