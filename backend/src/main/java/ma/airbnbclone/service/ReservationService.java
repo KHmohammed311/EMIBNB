@@ -53,6 +53,12 @@ public class ReservationService {
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Annonce introuvable : " + reservation.getAnnonceId()));
 
+        // Bloquer l'auto-réservation : un hôte ne peut pas réserver sa propre annonce
+        if (annonce.getHoteId() != null && annonce.getHoteId().equals(reservation.getVoyageurId())) {
+            throw new IllegalArgumentException(
+                    "Vous ne pouvez pas réserver votre propre annonce.");
+        }
+
         // Validation du nombre de voyageurs
         if (reservation.getNbVoyageurs() > annonce.getMaxVoyageurs()) {
             throw new IllegalArgumentException(

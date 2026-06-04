@@ -160,9 +160,9 @@ export class ProfilComponent implements OnInit {
         this.annonceService.lister().subscribe(all =>
           this.annonces = all.filter(a => a.hoteId === user.id)
         );
-        // Réservations de cet utilisateur
-        this.reservationService.lister().subscribe(all =>
-          this.reservations = all.filter(r => r.voyageurId === user.id)
+        // Réservations faites PAR cet utilisateur (ses voyages)
+        this.reservationService.mesReservations(user.id!).subscribe(data =>
+          this.reservations = data
         );
       },
       error: () => { this.chargement = false; }
