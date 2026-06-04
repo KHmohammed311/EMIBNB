@@ -1,4 +1,4 @@
-# EMIBNB — Clone AirBnB Maroc
+# EMIBNB
 
 Projet réalisé dans le cadre du cours Bases de données NoSQL (S4). L'idée c'était de reproduire les fonctionnalités principales d'AirBnB mais adapté au contexte marocain, en utilisant plusieurs types de bases de données.
 
