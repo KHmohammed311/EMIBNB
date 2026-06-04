@@ -143,7 +143,7 @@ db.annonces.insertMany([
     type: "appartement",
     prixParNuit: 450,
     maxVoyageurs: 4,
-    photos: ["casa_apt1_01.jpg", "casa_apt1_02.jpg", "casa_apt1_03.jpg"],
+    photos: ["https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800", "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800", "https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=800"],
     equipements: ["WiFi", "Climatisation", "Cuisine équipée", "Machine à laver", "Parking"],
     localisation: {
       ville: "Casablanca",
@@ -175,7 +175,7 @@ db.annonces.insertMany([
     type: "maison",
     prixParNuit: 850,
     maxVoyageurs: 6,
-    photos: ["marrakech_riad_01.jpg", "marrakech_riad_02.jpg", "marrakech_riad_03.jpg"],
+    photos: ["https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=800", "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800"],
     equipements: ["WiFi", "Hammam", "Petit-déjeuner inclus", "Terrasse", "Climatisation"],
     localisation: {
       ville: "Marrakech",
@@ -207,7 +207,7 @@ db.annonces.insertMany([
     type: "villa",
     prixParNuit: 2200,
     maxVoyageurs: 10,
-    photos: ["marrakech_villa_01.jpg", "marrakech_villa_02.jpg"],
+    photos: ["https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800", "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800"],
     equipements: ["Piscine", "WiFi", "Barbecue", "Jacuzzi", "Salle de jeux", "Parking"],
     localisation: {
       ville: "Marrakech",
@@ -231,7 +231,7 @@ db.annonces.insertMany([
     type: "appartement",
     prixParNuit: 320,
     maxVoyageurs: 2,
-    photos: ["rabat_apt_01.jpg", "rabat_apt_02.jpg"],
+    photos: ["https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800", "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800"],
     equipements: ["WiFi", "Cuisine équipée", "Netflix", "Climatisation"],
     localisation: {
       ville: "Rabat",
@@ -255,7 +255,7 @@ db.annonces.insertMany([
     type: "maison",
     prixParNuit: 650,
     maxVoyageurs: 8,
-    photos: ["fes_maison_01.jpg", "fes_maison_02.jpg", "fes_maison_03.jpg"],
+    photos: ["https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800", "https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=800"],
     equipements: ["WiFi", "Petit-déjeuner inclus", "Terrasse", "Cuisine marocaine"],
     localisation: {
       ville: "Fès",
@@ -279,7 +279,7 @@ db.annonces.insertMany([
     type: "chambre",
     prixParNuit: 180,
     maxVoyageurs: 2,
-    photos: ["marrakech_chambre_01.jpg"],
+    photos: ["https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800"],
     equipements: ["WiFi", "Petit-déjeuner inclus", "Climatisation"],
     localisation: {
       ville: "Marrakech",
@@ -303,7 +303,7 @@ db.annonces.insertMany([
     type: "appartement",
     prixParNuit: 280,
     maxVoyageurs: 2,
-    photos: ["casa_studio_01.jpg", "casa_studio_02.jpg"],
+    photos: ["https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800", "https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=800"],
     equipements: ["WiFi", "Cuisine équipée", "Terrasse", "Climatisation"],
     localisation: {
       ville: "Casablanca",
@@ -327,7 +327,7 @@ db.annonces.insertMany([
     type: "villa",
     prixParNuit: 3500,
     maxVoyageurs: 8,
-    photos: ["mohamm_villa_01.jpg", "mohamm_villa_02.jpg", "mohamm_villa_03.jpg"],
+    photos: ["https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800", "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800"],
     equipements: ["Piscine", "WiFi", "Plage privée", "Jacuzzi", "Chef à domicile", "Parking"],
     localisation: {
       ville: "Mohammedia",
@@ -478,7 +478,7 @@ db.activites.insertMany([
     duree: 180,
     maxParticipants: 8,
     categorie: "Culture & Histoire",
-    photos: ["fes_visite_01.jpg", "fes_visite_02.jpg"],
+    photos: ["https://images.unsplash.com/photo-1539037116277-4db20889f2d4?w=800", "https://images.unsplash.com/photo-1548013146-72479768bada?w=800"],
     noteMoyenne: 4.9
   },
   {
@@ -490,7 +490,7 @@ db.activites.insertMany([
     duree: 240,
     maxParticipants: 6,
     categorie: "Gastronomie",
-    photos: ["marrakech_cuisine_01.jpg"],
+    photos: ["https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800"],
     noteMoyenne: 4.7
   },
   {
@@ -502,7 +502,7 @@ db.activites.insertMany([
     duree: 360,
     maxParticipants: 12,
     categorie: "Aventure & Nature",
-    photos: ["agafay_01.jpg", "agafay_02.jpg"],
+    photos: ["https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=800", "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=800"],
     noteMoyenne: 4.8
   },
   {
@@ -514,7 +514,7 @@ db.activites.insertMany([
     duree: 120,
     maxParticipants: 10,
     categorie: "Sport & Bien-être",
-    photos: ["casa_surf_01.jpg"],
+    photos: ["https://images.unsplash.com/photo-1502680390469-be75c86b636f?w=800"],
     noteMoyenne: 4.6
   }
 ]);
