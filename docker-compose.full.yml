@@ -33,9 +33,10 @@ services:
       - airbnb-net
     healthcheck:
       test: ["CMD", "cypher-shell", "-u", "neo4j", "-p", "password", "RETURN 1"]
-      interval: 15s
-      timeout: 10s
+      interval: 20s
+      timeout: 30s
       retries: 5
+      start_period: 60s
 
   # ── Neo4j Init (lance les scripts Cypher au 1er démarrage) ──
   neo4j-init:
