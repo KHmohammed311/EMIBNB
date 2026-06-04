@@ -7,6 +7,8 @@ services:
     image: mongo:7
     container_name: mongo
     restart: unless-stopped
+    ports:
+      - "27020:27017"   # Compass/Compass → mongodb://localhost:27020/
     volumes:
       - mongo-data:/data/db
     networks:
